@@ -35,11 +35,8 @@ public:
     void setGamesPlayedWithoutTeam(int gamesPlayedWithoutTeam);
     void setGoals(int goals);
     void setCards(int cards);
-    void setGoalKeeper(bool goalKeeper);
     void setBetterPlayer(Player*);
     void setWorsePlayer(Player*);
-    void setTeam(Team* team);
-
 
     int getPlayerId() const;
     int getGamesPlayedWithoutTeam() const;
@@ -50,6 +47,7 @@ public:
 
     Player* getBetterPlayer() const;
     Player* getWorsePlayer() const;
+    int getClosestPlayerId() const;
 
     int compare(Player& other) const;
 };

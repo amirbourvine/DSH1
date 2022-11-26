@@ -805,7 +805,7 @@ output_t<AVLNode<T>*> AVLNode<T>::findAbove(AVLNode<T> *root, const T& val) {//s
     if(root->isEmpty){
         return StatusType::INVALID_INPUT;
     }
-    if(this->isLarger(val, root->findMax()->key)){
+    if(this->isLarger(val, root->findMax()->key) || this->isEqual(val, root->findMax()->key)){
         return nullptr;
     }
     AVLNode<T>* search_finished;
@@ -894,7 +894,7 @@ output_t<AVLNode<T> *> AVLNode<T>::findUnder(AVLNode<T> *root, const T &val) {
     if(root->isEmpty){
         return StatusType::INVALID_INPUT;
     }
-    if(this->isLarger(root->findMin()->key, val)){
+    if(this->isLarger(root->findMin()->key, val) || this->isEqual(root->findMin()->key, val)){
         return nullptr;
     }
     AVLNode<T>* search_finished;

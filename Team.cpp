@@ -46,12 +46,13 @@ std::ostream& operator<<(std::ostream& os, const Team& t){
     return os << "TeamId: " << t.teamId << std::endl;
 }
 
-int Team::getTeamId() const {
-    return teamId;
+output_t<AVLNode<shared_ptr<Player>>*> Team::findPlayerByID(int playerId) const{
+    shared_ptr<Player> player(new Player(playerId));
+    return teamPlayersByID->find(player);
 }
 
-void Team::setTeamId(int teamId) {
-    Team::teamId = teamId;
+int Team::getTeamId() const {
+    return teamId;
 }
 
 int Team::getPoints() const {
@@ -80,10 +81,6 @@ void Team::setGamesPlayedAsTeam(int gamesPlayedAsTeam) {
 
 int Team::getWinningRate() const {
     return winningRate;
-}
-
-void Team::setWinningRate(int winningRate) {
-    Team::winningRate = winningRate;
 }
 
 int Team::getPlayersCount() const {

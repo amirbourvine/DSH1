@@ -31,8 +31,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, const Team&);
 
+    output_t<AVLNode<shared_ptr<Player>>*> findPlayerByID(int playerId) const;
+
     int getTeamId() const;
-    void setTeamId(int teamId);
     int getPoints() const;
     void setPoints(int points);
     int getGoalKeepersAmount() const;
@@ -40,7 +41,6 @@ public:
     int getGamesPlayedAsTeam() const;
     void setGamesPlayedAsTeam(int gamesPlayedAsTeam);
     int getWinningRate() const;
-    void setWinningRate(int winningRate);
     int getPlayersCount() const;
     void setPlayersCount(int playersCount);
     const shared_ptr<Player> &getTopScorer() const;

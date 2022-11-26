@@ -35,6 +35,7 @@ public:
     output_t<int> get_team_points(int teamId);
     output_t<int> get_top_scorer(int teamId);
     output_t<int> get_all_players_count(int teamId);
+    output_t<int> get_closest_player(int playerId, int teamId);
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);

@@ -64,5 +64,18 @@ int main(){
     if(wct.get_all_players_count(-1).status() == StatusType::SUCCESS)
         cout << wct.get_all_players_count(-1).ans() << endl;
 
+    /*
+    wct.add_team(3, 0);
+    wct.add_player(30, 3, 1, 2, 10, false);
+    wct.add_player(31, 3, 1, 2, 2, false);
+    wct.add_player(32, 3, 1, 2, 4, false);
+    wct.add_player(33, 3, 1, 3, 10, false);
+
+    cout << wct.get_closest_player(30, 3).ans() << endl;
+    cout << wct.get_closest_player(31, 3).ans() << endl;
+    cout << wct.get_closest_player(32, 3).ans() << endl;
+    cout << wct.get_closest_player(33, 3).ans() << endl;
+     */
+
     return 0;
 }

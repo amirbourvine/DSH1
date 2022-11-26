@@ -98,13 +98,17 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
             top_scorer = shared_ptr<Player>(p);
 
-        p->setBetterPlayer(&**(playersByScore->findAbove(p).ans()->getKey().ans()));
-        if(p->getBetterPlayer() != nullptr)
-            p->getBetterPlayer()->setWorsePlayer(&*p);
+        if(playersByScore->findAbove(p).ans() != nullptr) {
+            p->setBetterPlayer(&**(playersByScore->findAbove(p).ans()->getKey().ans()));
+            if(p->getBetterPlayer() != nullptr)
+                p->getBetterPlayer()->setWorsePlayer(&*p);
+        }
 
-        p->setWorsePlayer(&**(playersByScore->findUnder(p).ans()->getKey().ans()));
-        if(p->getWorsePlayer() != nullptr)
-            p->getWorsePlayer()->setBetterPlayer(&*p);
+        if(playersByScore->findUnder(p).ans() != nullptr){
+            p->setWorsePlayer(&**(playersByScore->findUnder(p).ans()->getKey().ans()));
+            if(p->getWorsePlayer() != nullptr)
+                p->getWorsePlayer()->setBetterPlayer(&*p);
+        }
     }
     catch(bad_alloc){
         return StatusType::ALLOCATION_ERROR;
@@ -299,6 +303,29 @@ output_t<int> world_cup_t::get_all_players_count(int teamId){
         return StatusType::FAILURE;
 
     return playersCount;
+}
+
+output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
+    if(playerId <= 0 || teamId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Team> team(new Team(teamId));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+    if(out1.status() != StatusType::SUCCESS) {
+        return out1.status();
+    }
+
+    team = *(out1.ans()->getKey().ans());
+
+
+    output_t<AVLNode<shared_ptr<Player>>*> out2 = team->findPlayerByID(playerId);
+    if(out2.status() != StatusType::SUCCESS) {
+        return out2.status();
+    }
+
+    shared_ptr<Player> player = *(out2.ans()->getKey().ans());
+
+    return player->getClosestPlayerId();
 }
 
 

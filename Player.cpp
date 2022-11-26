@@ -1,7 +1,7 @@
 //
 // Created by Elad on 25/11/2022.
 //
-
+#include <math.h>
 #include "Player.h"
 
 using namespace std;
@@ -59,10 +59,6 @@ void Player::setCards(int cards) {
     Player::cards = cards;
 }
 
-void Player::setGoalKeeper(bool goalKeeper) {
-    Player::goalKeeper = goalKeeper;
-}
-
 void Player::setBetterPlayer(Player* betterPlayer) {
     Player::betterPlayer = betterPlayer;
 }
@@ -71,12 +67,34 @@ void Player::setWorsePlayer(Player* WorsePlayer) {
     Player::worsePlayer = worsePlayer;
 }
 
-Team* Player::getTeam() const {
-    return team;
+int Player::getClosestPlayerId() const{
+    if(worsePlayer == nullptr && betterPlayer == nullptr)
+        return playerId;
+    if(worsePlayer != nullptr && betterPlayer == nullptr)
+        return worsePlayer->playerId;
+    if(worsePlayer == nullptr && betterPlayer != nullptr)
+        return betterPlayer->playerId;
+
+    if(abs(goals - worsePlayer->goals) < abs(goals - betterPlayer->goals))
+        return worsePlayer->playerId;
+    if(abs(goals - worsePlayer->goals) > abs(goals - betterPlayer->goals))
+        return betterPlayer->playerId;
+
+    if(abs(cards - worsePlayer->cards) < abs(cards - betterPlayer->cards))
+        return worsePlayer->playerId;
+    if(abs(cards - worsePlayer->cards) > abs(cards - betterPlayer->cards))
+        return betterPlayer->playerId;
+
+    if(abs(playerId - worsePlayer->playerId) > abs(playerId - betterPlayer->playerId))
+        return worsePlayer->playerId;
+    if(abs(playerId - worsePlayer->playerId) < abs(playerId - betterPlayer->playerId))
+        return betterPlayer->playerId;
+
+    return (worsePlayer->playerId > betterPlayer->playerId) ? worsePlayer->playerId : betterPlayer->playerId;
 }
 
-void Player::setTeam(Team* team) {
-    Player::team = team;
+Team* Player::getTeam() const {
+    return team;
 }
 
 int Player::compare(Player& other) const{
