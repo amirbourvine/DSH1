@@ -14,11 +14,12 @@ bool isEqualByID(const shared_ptr<Team>& t1, const shared_ptr<Team>& t2){
 }
 
 world_cup_t::world_cup_t():
-    teams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
-    validTeams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
-    players(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
-    playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
-    top_scorer(nullptr) {}
+        teams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
+        validTeams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
+        players(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
+        playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
+        top_scorer(nullptr),
+        playersCount(0){}
 
 StatusType world_cup_t::add_team(int teamId, int points){
     if(teamId <= 0 || points < 0)
@@ -60,7 +61,7 @@ StatusType world_cup_t::remove_team(int teamId){
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper){
     if(playerId <= 0 || teamId <= 0 || gamesPlayed < 0 || goals < 0 || cards < 0 ||
-            (gamesPlayed == 0 && (goals > 0 || cards > 0)))
+       (gamesPlayed == 0 && (goals > 0 || cards > 0)))
         return StatusType::INVALID_INPUT;
 
     shared_ptr<Player> temp_p(new Player(playerId));
@@ -149,6 +150,22 @@ StatusType world_cup_t::remove_player(int playerId){
 StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int scoredGoals, int cardsReceived){
     if(playerId <= 0 || gamesPlayed < 0 || scoredGoals < 0 || cardsReceived < 0)
         return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player(new Player(playerId));
+    output_t<AVLNode<shared_ptr<Player>>*> out = players->find(player);
+    if(out.status() == StatusType::FAILURE)
+        return StatusType::FAILURE;
+
+    player = *(out.ans()->getKey().ans());
+
+    if(remove_player(player->getPlayerId()) != StatusType::SUCCESS)
+        return remove_player(player->getPlayerId());
+
+    if(add_player(player->getPlayerId(), player->getTeam()->getTeamId(), player->getGamesPlayedWithoutTeam(),
+                  player->getGoals(), player->getCards(), player->isGoalKeeper()) != StatusType::SUCCESS)
+        return add_player(player->getPlayerId(), player->getTeam()->getTeamId(),
+                          player->getGamesPlayedWithoutTeam() + gamesPlayed,
+                          player->getGoals() + scoredGoals, player->getCards() + cardsReceived, player->isGoalKeeper());
 
     return StatusType::SUCCESS;
 }
