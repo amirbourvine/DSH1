@@ -35,7 +35,12 @@ int main(){
     wct.add_player(210, 2, 1, 1, 0, false);
 
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
-        cout << "Success";
+        cout << "Success" << endl;
+
+    wct.add_player(220, 2, 1, 1, 0, false);
+
+    if(wct.get_num_played_games(220).status() == StatusType::SUCCESS)
+        cout << wct.get_num_played_games(220).ans() << endl;
 
     return 0;
 }

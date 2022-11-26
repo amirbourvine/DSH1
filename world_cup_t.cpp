@@ -164,8 +164,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int s
 
     shared_ptr<Player> player(new Player(playerId));
     output_t<AVLNode<shared_ptr<Player>>*> out = players->find(player);
-    if(out.status() == StatusType::FAILURE)
-        return StatusType::FAILURE;
+    if(out.status() != StatusType::SUCCESS)
+        return out.status();
 
     player = *(out.ans()->getKey().ans());
 
@@ -219,3 +219,28 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2){
 
     return StatusType::SUCCESS;
 }
+
+output_t <int> world_cup_t::get_num_played_games(int playerId){
+    if(playerId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player(new Player(playerId));
+    output_t<AVLNode<shared_ptr<Player>>*> out = players->find(player);
+    if(out.status() != StatusType::SUCCESS)
+        return out.status();
+
+    player = *(out.ans()->getKey().ans());
+
+    return player->getGamesPlayedWithoutTeam() + player->getTeam()->getGamesPlayedAsTeam();
+}
+
+
+
+
+
+
+
+
+
+
+
