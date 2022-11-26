@@ -31,8 +31,10 @@ public:
     StatusType remove_player(int playerId);
     StatusType update_player_stats(int playerId, int gamesPlayed, int scoredGoals, int cardsReceived);
     StatusType play_match(int teamId1, int teamId2);
-
     output_t<int> get_num_played_games(int playerId);
+    output_t<int> get_team_points(int teamId);
+    output_t<int> get_top_scorer(int teamId);
+    output_t<int> get_all_players_count(int teamId);
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);

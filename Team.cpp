@@ -142,7 +142,5 @@ StatusType Team::remove_player(const shared_ptr<Player> p){
         top_scorer = *(teamPlayersByScore->findMax()->getKey().ans());
     }
 
-    //Closest Player
-
     return StatusType::SUCCESS;
 }

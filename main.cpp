@@ -10,7 +10,7 @@ int main(){
     wct.add_team(1, 0);
     wct.add_team(2, 0);
 
-    wct.add_player(1, 1, 1, 1, 0, true);
+    wct.add_player(1, 1, 1, 1000, 0, true);
     wct.add_player(12, 1, 1, 1, 0, false);
     wct.add_player(13, 1, 1, 1, 0, false);
     wct.add_player(14, 1, 1, 1, 0, false);
@@ -37,10 +37,32 @@ int main(){
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
 
+    //wct.remove_player(210); <==== The group isn't valid anymore and
+    // threrefore removed from validTeams and then also from teams
+    // line 141 world_cup_t.cpp
+
+    if(wct.play_match(1, 2) == StatusType::SUCCESS)
+        cout << "Success" << endl;
+
     wct.add_player(220, 2, 1, 1, 0, false);
 
     if(wct.get_num_played_games(220).status() == StatusType::SUCCESS)
         cout << wct.get_num_played_games(220).ans() << endl;
+
+    if(wct.get_team_points(1).status() == StatusType::SUCCESS)
+        cout << wct.get_team_points(1).ans() << endl;
+
+    if(wct.get_top_scorer(2).status() == StatusType::SUCCESS)
+        cout << wct.get_top_scorer(2).ans() << endl;
+
+    if(wct.get_top_scorer(-1).status() == StatusType::SUCCESS)
+        cout << wct.get_top_scorer(-1).ans() << endl;
+
+    if(wct.get_all_players_count(2).status() == StatusType::SUCCESS)
+        cout << wct.get_all_players_count(2).ans() << endl;
+
+    if(wct.get_all_players_count(-1).status() == StatusType::SUCCESS)
+        cout << wct.get_all_players_count(-1).ans() << endl;
 
     return 0;
 }

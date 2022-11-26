@@ -28,8 +28,8 @@ StatusType world_cup_t::add_team(int teamId, int points){
     try {
         shared_ptr<Team> t(new Team(teamId, points));
 
-        if(teams->insert(t) == StatusType::FAILURE)
-            return StatusType::FAILURE;
+        if(teams->insert(t) != StatusType::SUCCESS)
+            return StatusType::SUCCESS;
     }
     catch(bad_alloc){
         return StatusType::ALLOCATION_ERROR;
@@ -92,7 +92,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
         if(team->isValid() && !validBeforePlayer){
             if(validTeams->insert(team) != StatusType::SUCCESS)
-                return validTeams->insert(team);
+                return validTeams->insert(shared_ptr<Team>(team));
         }
 
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
@@ -136,11 +136,13 @@ StatusType world_cup_t::remove_player(int playerId){
         return player->getTeam()->remove_player(player);
 
     if(!player->getTeam()->isValid() && validBeforePlayer){
-        shared_ptr<Team> temp;
-        temp = static_cast<const shared_ptr<Team>>(player->getTeam());
-        if(validTeams->remove(temp) != StatusType::SUCCESS)
-            return validTeams->remove(temp);
+        //teams->print2D();
+        shared_ptr<Team> team = shared_ptr<Team>(player->getTeam());
+        if(validTeams->remove(team) != StatusType::SUCCESS)
+            return validTeams->remove(team);
     }
+    //teams->print2D();
+
 
     --playersCount;
 
@@ -234,6 +236,70 @@ output_t <int> world_cup_t::get_num_played_games(int playerId){
     return player->getGamesPlayedWithoutTeam() + player->getTeam()->getGamesPlayedAsTeam();
 }
 
+output_t<int> world_cup_t::get_team_points(int teamId){
+    if(teamId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Team> team(new Team(teamId));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+    if(out1.status() != StatusType::SUCCESS) {
+        return out1.status();
+    }
+
+    team = *(out1.ans()->getKey().ans());
+
+    return team->getPoints();
+}
+
+output_t<int> world_cup_t::get_top_scorer(int teamId){
+    if(teamId == 0)
+        return StatusType::INVALID_INPUT;
+
+    if(teamId > 0){
+        shared_ptr<Team> team(new Team(teamId));
+        output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+        if(out1.status() != StatusType::SUCCESS) {
+            return out1.status();
+        }
+
+        team = *(out1.ans()->getKey().ans());
+
+        if(team->getPlayersCount() == 0)
+            return StatusType::FAILURE;
+
+        return team->getTopScorer()->getPlayerId();
+    }
+
+    if(playersCount == 0)
+        return StatusType::FAILURE;
+
+    return top_scorer->getPlayerId();
+}
+
+output_t<int> world_cup_t::get_all_players_count(int teamId){
+    if(teamId == 0)
+        return StatusType::INVALID_INPUT;
+
+    if(teamId > 0){
+        shared_ptr<Team> team(new Team(teamId));
+        output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+        if(out1.status() != StatusType::SUCCESS) {
+            return out1.status();
+        }
+
+        team = *(out1.ans()->getKey().ans());
+
+        if(team->getPlayersCount() == 0)
+            return StatusType::FAILURE;
+
+        return team->getPlayersCount();
+    }
+
+    if(playersCount == 0)
+        return StatusType::FAILURE;
+
+    return playersCount;
+}
 
 
 
