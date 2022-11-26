@@ -471,7 +471,7 @@ void AVLNode<T>::print2DUtil(AVLNode<T>* root, int space)
     for (int i = COUNT; i < space; i++)
         cout << " ";
     T* t= root->getKey().ans();
-    cout << *t << "\n";
+    cout << **t << "\n";
 
     // Process left child
     print2DUtil(root->left, space);

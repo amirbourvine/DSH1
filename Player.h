@@ -18,8 +18,8 @@ private:
     int goals;
     int cards;
     bool goalKeeper;
-    shared_ptr<Player> betterPlayer;
-    shared_ptr<Player> worsePlayer;
+    Player* betterPlayer;
+    Player* worsePlayer;
     Team* team;
 
 public:
@@ -36,8 +36,8 @@ public:
     void setGoals(int goals);
     void setCards(int cards);
     void setGoalKeeper(bool goalKeeper);
-    void setBetterPlayer(shared_ptr<Player> betterPlayer);
-    void setWorsePlayer(shared_ptr<Player> worsePlayer);
+    void setBetterPlayer(Player*);
+    void setWorsePlayer(Player*);
     void setTeam(Team* team);
 
 
@@ -48,8 +48,8 @@ public:
     bool isGoalKeeper() const;
     Team* getTeam() const;
 
-    shared_ptr<Player> getBetterPlayer() const;
-    shared_ptr<Player> getWorsePlayer() const;
+    Player* getBetterPlayer() const;
+    Player* getWorsePlayer() const;
 
     int compare(Player& other) const;
 };

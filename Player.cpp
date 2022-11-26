@@ -39,11 +39,11 @@ bool Player::isGoalKeeper() const {
     return goalKeeper;
 }
 
-shared_ptr<Player> Player::getBetterPlayer() const {
+Player* Player::getBetterPlayer() const {
     return betterPlayer;
 }
 
-shared_ptr<Player> Player::getWorsePlayer() const {
+Player* Player::getWorsePlayer() const {
     return worsePlayer;
 }
 
@@ -63,11 +63,11 @@ void Player::setGoalKeeper(bool goalKeeper) {
     Player::goalKeeper = goalKeeper;
 }
 
-void Player::setBetterPlayer(shared_ptr<Player> betterPlayer) {
+void Player::setBetterPlayer(Player* betterPlayer) {
     Player::betterPlayer = betterPlayer;
 }
 
-void Player::setWorsePlayer(shared_ptr<Player> WorsePlayer) {
+void Player::setWorsePlayer(Player* WorsePlayer) {
     Player::worsePlayer = worsePlayer;
 }
 

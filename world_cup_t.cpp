@@ -70,18 +70,18 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(team);
-    if(out.status() == StatusType::FAILURE)
-        return StatusType::FAILURE;
+    if(out.status() != StatusType::SUCCESS)
+        return out.status();
 
     team = *(out.ans()->getKey().ans());
     try {
         shared_ptr<Player> p(new Player (playerId, gamesPlayed - team->getGamesPlayedAsTeam(), goals, cards, goalKeeper, &*team));
 
-        if (players->insert(shared_ptr<Player>(p)) == StatusType::FAILURE)
-            return StatusType::FAILURE;
+        if (players->insert(shared_ptr<Player>(p)) != StatusType::SUCCESS)
+            return players->insert(shared_ptr<Player>(p));
 
-        if (playersByScore->insert(shared_ptr<Player>(p)) == StatusType::FAILURE)
-            return StatusType::FAILURE;
+        if (playersByScore->insert(shared_ptr<Player>(p)) != StatusType::SUCCESS)
+            return playersByScore->insert(shared_ptr<Player>(p));
 
         ++playersCount;
 
@@ -91,14 +91,20 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             return team->add_player(p);
 
         if(team->isValid() && !validBeforePlayer){
-            if(validTeams->insert(team) == StatusType::FAILURE)
-                return StatusType::FAILURE;
+            if(validTeams->insert(team) != StatusType::SUCCESS)
+                return validTeams->insert(team);
         }
 
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
             top_scorer = shared_ptr<Player>(p);
 
-        //ClosestPlayer
+        p->setBetterPlayer(&**(playersByScore->findAbove(p).ans()->getKey().ans()));
+        if(p->getBetterPlayer() != nullptr)
+            p->getBetterPlayer()->setWorsePlayer(&*p);
+
+        p->setWorsePlayer(&**(playersByScore->findUnder(p).ans()->getKey().ans()));
+        if(p->getWorsePlayer() != nullptr)
+            p->getWorsePlayer()->setBetterPlayer(&*p);
     }
     catch(bad_alloc){
         return StatusType::ALLOCATION_ERROR;
@@ -113,18 +119,16 @@ StatusType world_cup_t::remove_player(int playerId){
 
     shared_ptr<Player> player(new Player(playerId));
     output_t<AVLNode<shared_ptr<Player>>*> out = players->find(player);
-    if(out.status() == StatusType::FAILURE)
-        return StatusType::FAILURE;
+    if(out.status() != StatusType::SUCCESS)
+        return StatusType::SUCCESS;
 
     player = *(out.ans()->getKey().ans());
 
-    if(players->remove(player) == StatusType::FAILURE)
-        return StatusType::FAILURE;
+    if(players->remove(player) != StatusType::SUCCESS)
+        return players->remove(player);
 
-    if(playersByScore->remove(player) == StatusType::FAILURE)
-        return StatusType::FAILURE;
-
-    --playersCount;
+    if(playersByScore->remove(player) != StatusType::SUCCESS)
+        return playersByScore->remove(player);
 
     bool validBeforePlayer = player->getTeam()->isValid();
 
@@ -134,15 +138,22 @@ StatusType world_cup_t::remove_player(int playerId){
     if(!player->getTeam()->isValid() && validBeforePlayer){
         shared_ptr<Team> temp;
         temp = static_cast<const shared_ptr<Team>>(player->getTeam());
-        if(validTeams->remove(temp) == StatusType::FAILURE)
-            return StatusType::FAILURE;
+        if(validTeams->remove(temp) != StatusType::SUCCESS)
+            return validTeams->remove(temp);
     }
+
+    --playersCount;
 
     if(playersCount == 0)
         top_scorer = nullptr;
     else if(top_scorer->getPlayerId() == playerId){
         top_scorer = *(playersByScore->findMax()->getKey().ans());
     }
+
+    if(player->getBetterPlayer() != nullptr)
+        player->getBetterPlayer()->setWorsePlayer(player->getWorsePlayer());
+    if(player->getWorsePlayer() != nullptr)
+        player->getWorsePlayer()->setBetterPlayer(player->getBetterPlayer());
 
     return StatusType::SUCCESS;
 }
@@ -161,11 +172,50 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int s
     if(remove_player(player->getPlayerId()) != StatusType::SUCCESS)
         return remove_player(player->getPlayerId());
 
-    if(add_player(player->getPlayerId(), player->getTeam()->getTeamId(), player->getGamesPlayedWithoutTeam(),
-                  player->getGoals(), player->getCards(), player->isGoalKeeper()) != StatusType::SUCCESS)
+    if(add_player(player->getPlayerId(), player->getTeam()->getTeamId(),
+                  player->getGamesPlayedWithoutTeam(),
+                  player->getGoals(), player->getCards(),
+                  player->isGoalKeeper()) != StatusType::SUCCESS)
         return add_player(player->getPlayerId(), player->getTeam()->getTeamId(),
                           player->getGamesPlayedWithoutTeam() + gamesPlayed,
-                          player->getGoals() + scoredGoals, player->getCards() + cardsReceived, player->isGoalKeeper());
+                          player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
+                          player->isGoalKeeper());
+
+    return StatusType::SUCCESS;
+}
+
+StatusType world_cup_t::play_match(int teamId1, int teamId2){
+    if(teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Team> team1(new Team(teamId1));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = validTeams->find(team1);
+    if(out1.status() != StatusType::SUCCESS) {
+        return out1.status();
+    }
+
+    team1 = *(out1.ans()->getKey().ans());
+
+    shared_ptr<Team> team2(new Team(teamId2));
+    output_t<AVLNode<shared_ptr<Team>>*> out2 = validTeams->find(team2);
+
+    if(out2.status() != StatusType::SUCCESS) {
+        return out2.status();
+    }
+
+    team2 = *(out2.ans()->getKey().ans());
+
+    if(team1->getWinningRate() > team2->getWinningRate())
+        team1->setPoints(team1->getPoints() + 3);
+    else if(team1->getWinningRate() < team2->getWinningRate())
+        team2->setPoints(team2->getPoints() + 3);
+    else {
+        team1->setPoints(team1->getPoints() + 1);
+        team2->setPoints(team2->getPoints() + 1);
+    }
+
+    team1->setGamesPlayedAsTeam(team1->getGamesPlayedAsTeam() + 1);
+    team2->setGamesPlayedAsTeam(team2->getGamesPlayedAsTeam() + 1);
 
     return StatusType::SUCCESS;
 }

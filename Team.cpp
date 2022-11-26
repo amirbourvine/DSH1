@@ -112,12 +112,10 @@ StatusType Team::add_player(const shared_ptr<Player> p) {
     winningRate += p->getGoals() - p->getCards();
     GoalKeepersAmount += p->isGoalKeeper();
 
-    if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
-        top_scorer = shared_ptr<Player>(p);
-
     ++playersCount;
 
-    //Closest Player
+    if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
+        top_scorer = shared_ptr<Player>(p);
 
     return StatusType::SUCCESS;
 }
@@ -136,13 +134,13 @@ StatusType Team::remove_player(const shared_ptr<Player> p){
     winningRate -= p->getGoals() - p->getCards();
     GoalKeepersAmount -= p->isGoalKeeper();
 
+    --playersCount;
+
     if(playersCount == 0)
         top_scorer = nullptr;
     else if(top_scorer->getPlayerId() == p->getPlayerId()){
         top_scorer = *(teamPlayersByScore->findMax()->getKey().ans());
     }
-
-    --playersCount;
 
     //Closest Player
 
