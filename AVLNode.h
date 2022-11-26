@@ -578,12 +578,7 @@ AVLNode<T> *AVLNode<T>::removeLeaf(AVLNode<T> *node) {
     AVLNode<T>* temp = node->up;
     if(node->up->left==node){
         node->up->left = nullptr;
-        try {
-            delete node;
-        }catch(std::exception& e){
-            return StatusType::ALLOCATION_ERROR;
-            throw e;
-        }
+        delete node;
     }
     else{
         node->up->right = nullptr;
