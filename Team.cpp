@@ -51,8 +51,8 @@ output_t<AVLNode<shared_ptr<Player>>*> Team::findPlayerByID(int playerId) const{
     return teamPlayersByID->find(player);
 }
 
-void Team::inOrderPlayers(void (*pFunction)(const shared_ptr<Player>& t)){
-    teamPlayersByID->inorder(playersCount, pFunction);
+void Team::inOrderPlayers(void (*pFunction)(shared_ptr<Player>& t)){
+    teamPlayersByID->inorder(pFunction);
 }
 
 int Team::getTeamId() const {

@@ -32,7 +32,7 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Team&);
 
     output_t<AVLNode<shared_ptr<Player>>*> findPlayerByID(int playerId) const;
-    void inOrderPlayers(void (*pFunction)(const shared_ptr<Player>& t));
+    void inOrderPlayers(void (*pFunction)(shared_ptr<Player>& t));
 
     int getTeamId() const;
     int getPoints() const;

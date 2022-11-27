@@ -327,7 +327,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
     return player->getClosestPlayerId();
 }
 
-void addGamesToPlayer(const shared_ptr<Player>& p){
+void addGamesToPlayer(shared_ptr<Player>& p){
     p->setGamesPlayedWithoutTeam(p->getGamesPlayedWithoutTeam() + p->getTeam()->getGamesPlayedAsTeam());
 }
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
@@ -437,13 +437,13 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
         return StatusType::INVALID_INPUT;
 
     int validTeamsAmount = validTeams->getSize();
-    int teamsPlayingAmount = validTeams->inRangeAmount(validTeamsAmount, &isInRange);
+    int teamsPlayingAmount = validTeams->inRangeAmount(&isInRange,minTeamId, maxTeamId);
     if(teamsPlayingAmount == 0)
         return StatusType::FAILURE;
 
     shared_ptr<Team>* teamsPlayingArr[teamsPlayingAmount];
 
-    validTeams->inorderToArrInRange(teamsPlayingArr, validTeamsAmount, &isInRange);
+    validTeams->inorderToArrInRange(teamsPlayingArr, teamsPlayingAmount, &isInRange, minTeamId, maxTeamId);
 
     int winningTeamId = (*teamsPlayingArr[0])->getTeamId();
     int winningTeamWinningRate = (*teamsPlayingArr[0])->getWinningRate();
