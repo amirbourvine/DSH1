@@ -18,13 +18,13 @@ private:
     int goals;
     int cards;
     bool goalKeeper;
-    Player* betterPlayer;
-    Player* worsePlayer;
-    Team* team;
+    weak_ptr<Player> betterPlayer;
+    weak_ptr<Player> worsePlayer;
+    weak_ptr<Team> team;
 
 public:
     Player(int playerId);
-    Player(int playerId, int gamesPlayed, int goals, int cards, bool goalKeeper, Team* team);
+    Player(int playerId, int gamesPlayed, int goals, int cards, bool goalKeeper, shared_ptr<Team> team);
     Player(Player& other) = default;
     Player& operator=(const Player& other) = default;
     ~Player() = default;
@@ -35,18 +35,18 @@ public:
     void setGamesPlayedWithoutTeam(int gamesPlayedWithoutTeam);
     void setGoals(int goals);
     void setCards(int cards);
-    void setBetterPlayer(Player*);
-    void setWorsePlayer(Player*);
+    void setBetterPlayer(shared_ptr<Player>);
+    void setWorsePlayer(shared_ptr<Player>);
 
     int getPlayerId() const;
     int getGamesPlayedWithoutTeam() const;
     int getGoals() const;
     int getCards() const;
     bool isGoalKeeper() const;
-    Team* getTeam() const;
+    shared_ptr<Team> getTeam() const;
 
-    Player* getBetterPlayer() const;
-    Player* getWorsePlayer() const;
+    shared_ptr<Player> getBetterPlayer() const;
+    shared_ptr<Player> getWorsePlayer() const;
     int getClosestPlayerId() const;
 
     int compare(Player& other) const;

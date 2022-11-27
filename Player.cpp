@@ -8,15 +8,16 @@ using namespace std;
 
 Player::Player(int playerId) : playerId(playerId) {}
 
-Player::Player(int playerId, int gamesPlayed, int goals, int cards, bool goalKeeper, Team* team):
+Player::Player(int playerId, int gamesPlayed, int goals, int cards, bool goalKeeper, shared_ptr<Team> team):
         playerId(playerId),
         gamesPlayedWithoutTeam(gamesPlayed),
         goals(goals),
         cards(cards),
         goalKeeper(goalKeeper),
-        betterPlayer(nullptr),
-        worsePlayer(nullptr),
         team(team){
+    shared_ptr<Player> temp1(nullptr);
+    this->betterPlayer = temp1;
+    this->worsePlayer = temp1;
 }
 
 int Player::getPlayerId() const {
@@ -39,12 +40,12 @@ bool Player::isGoalKeeper() const {
     return goalKeeper;
 }
 
-Player* Player::getBetterPlayer() const {
-    return betterPlayer;
+shared_ptr<Player> Player::getBetterPlayer() const {
+    return betterPlayer.lock();
 }
 
-Player* Player::getWorsePlayer() const {
-    return worsePlayer;
+shared_ptr<Player> Player::getWorsePlayer() const {
+    return worsePlayer.lock();
 }
 
 void Player::setGamesPlayedWithoutTeam(int gamesPlayedWithoutTeam) {
@@ -59,42 +60,42 @@ void Player::setCards(int cards) {
     Player::cards = cards;
 }
 
-void Player::setBetterPlayer(Player* betterPlayer) {
+void Player::setBetterPlayer(shared_ptr<Player> betterPlayer) {
     Player::betterPlayer = betterPlayer;
 }
 
-void Player::setWorsePlayer(Player* WorsePlayer) {
+void Player::setWorsePlayer(shared_ptr<Player> WorsePlayer) {
     Player::worsePlayer = worsePlayer;
 }
 
 int Player::getClosestPlayerId() const{
-    if(worsePlayer == nullptr && betterPlayer == nullptr)
+    if(worsePlayer.lock() == nullptr && betterPlayer.lock() == nullptr)
         return playerId;
-    if(worsePlayer != nullptr && betterPlayer == nullptr)
-        return worsePlayer->playerId;
-    if(worsePlayer == nullptr && betterPlayer != nullptr)
-        return betterPlayer->playerId;
+    if(worsePlayer.lock() != nullptr && betterPlayer.lock() == nullptr)
+        return worsePlayer.lock()->playerId;
+    if(worsePlayer.lock() == nullptr && betterPlayer.lock() != nullptr)
+        return betterPlayer.lock()->playerId;
 
-    if(abs(goals - worsePlayer->goals) < abs(goals - betterPlayer->goals))
-        return worsePlayer->playerId;
-    if(abs(goals - worsePlayer->goals) > abs(goals - betterPlayer->goals))
-        return betterPlayer->playerId;
+    if(abs(goals - worsePlayer.lock()->goals) < abs(goals - betterPlayer.lock()->goals))
+        return worsePlayer.lock()->playerId;
+    if(abs(goals - worsePlayer.lock()->goals) > abs(goals - betterPlayer.lock()->goals))
+        return betterPlayer.lock()->playerId;
 
-    if(abs(cards - worsePlayer->cards) < abs(cards - betterPlayer->cards))
-        return worsePlayer->playerId;
-    if(abs(cards - worsePlayer->cards) > abs(cards - betterPlayer->cards))
-        return betterPlayer->playerId;
+    if(abs(cards - worsePlayer.lock()->cards) < abs(cards - betterPlayer.lock()->cards))
+        return worsePlayer.lock()->playerId;
+    if(abs(cards - worsePlayer.lock()->cards) > abs(cards - betterPlayer.lock()->cards))
+        return betterPlayer.lock()->playerId;
 
-    if(abs(playerId - worsePlayer->playerId) > abs(playerId - betterPlayer->playerId))
-        return worsePlayer->playerId;
-    if(abs(playerId - worsePlayer->playerId) < abs(playerId - betterPlayer->playerId))
-        return betterPlayer->playerId;
+    if(abs(playerId - worsePlayer.lock()->playerId) > abs(playerId - betterPlayer.lock()->playerId))
+        return worsePlayer.lock()->playerId;
+    if(abs(playerId - worsePlayer.lock()->playerId) < abs(playerId - betterPlayer.lock()->playerId))
+        return betterPlayer.lock()->playerId;
 
-    return (worsePlayer->playerId > betterPlayer->playerId) ? worsePlayer->playerId : betterPlayer->playerId;
+    return (worsePlayer.lock()->playerId > betterPlayer.lock()->playerId) ? worsePlayer.lock()->playerId : betterPlayer.lock()->playerId;
 }
 
-Team* Player::getTeam() const {
-    return team;
+shared_ptr<Team> Player::getTeam() const {
+    return team.lock();
 }
 
 int Player::compare(Player& other) const{

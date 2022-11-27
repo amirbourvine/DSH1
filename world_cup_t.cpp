@@ -77,7 +77,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     team = *(out.ans()->getKey().ans());
     try {
-        shared_ptr<Player> p(new Player (playerId, gamesPlayed - team->getGamesPlayedAsTeam(), goals, cards, goalKeeper, &*team));
+        shared_ptr<Player> p(new Player(playerId, gamesPlayed - team->getGamesPlayedAsTeam(), goals, cards, goalKeeper, team));
 
         if (players->insert(shared_ptr<Player>(p)) != StatusType::SUCCESS)
             return players->insert(shared_ptr<Player>(p));
@@ -101,15 +101,15 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             top_scorer = shared_ptr<Player>(p);
 
         if(playersByScore->findAbove(p).ans() != nullptr) {
-            p->setBetterPlayer(&**(playersByScore->findAbove(p).ans()->getKey().ans()));
+            p->setBetterPlayer(*(playersByScore->findAbove(p).ans()->getKey().ans()));
             if(p->getBetterPlayer() != nullptr)
-                p->getBetterPlayer()->setWorsePlayer(&*p);
+                p->getBetterPlayer()->setWorsePlayer(p);
         }
 
         if(playersByScore->findUnder(p).ans() != nullptr){
-            p->setWorsePlayer(&**(playersByScore->findUnder(p).ans()->getKey().ans()));
+            p->setWorsePlayer(*(playersByScore->findUnder(p).ans()->getKey().ans()));
             if(p->getWorsePlayer() != nullptr)
-                p->getWorsePlayer()->setBetterPlayer(&*p);
+                p->getWorsePlayer()->setBetterPlayer(p);
         }
     }
     catch(bad_alloc){
@@ -126,7 +126,7 @@ StatusType world_cup_t::remove_player(int playerId){
     shared_ptr<Player> player(new Player(playerId));
     output_t<AVLNode<shared_ptr<Player>>*> out = players->find(player);
     if(out.status() != StatusType::SUCCESS)
-        return StatusType::SUCCESS;
+        return out.status();
 
     player = *(out.ans()->getKey().ans());
 
@@ -142,13 +142,10 @@ StatusType world_cup_t::remove_player(int playerId){
         return player->getTeam()->remove_player(player);
 
     if(!player->getTeam()->isValid() && validBeforePlayer){
-        //teams->print2D();
-        shared_ptr<Team> team = shared_ptr<Team>(player->getTeam());
+        shared_ptr<Team> team(player->getTeam());
         if(validTeams->remove(team) != StatusType::SUCCESS)
             return validTeams->remove(team);
     }
-    //teams->print2D();
-
 
     --playersCount;
 

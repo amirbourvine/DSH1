@@ -37,11 +37,10 @@ int main(){
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
 
-    //wct.remove_player(210); <==== The group isn't valid anymore and
     // threrefore removed from validTeams and then also from teams
     // line 141 world_cup_t.cpp
-    // wct.update_player_stats(1, 1, 1000, 0);
 
+    wct.update_player_stats(1, 1, 1000, 0);
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
 
@@ -89,6 +88,8 @@ int main(){
     for(int i = 0; i < 4; ++i)
         cout << output[i] << " ";
     cout << endl;
+
+    //Test knockout
 
 
     return 0;
