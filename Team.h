@@ -32,6 +32,7 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Team&);
 
     output_t<AVLNode<shared_ptr<Player>>*> findPlayerByID(int playerId) const;
+    void inOrderPlayers(void (*pFunction)(const shared_ptr<Player>& t));
 
     int getTeamId() const;
     int getPoints() const;
@@ -49,6 +50,8 @@ public:
     StatusType add_player(const shared_ptr<Player> p);
     StatusType remove_player(const shared_ptr<Player> p);
     bool isValid() const;
+
+    void mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2);
 };
 
 bool isLargerByID(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);

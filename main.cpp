@@ -10,7 +10,7 @@ int main(){
     wct.add_team(1, 0);
     wct.add_team(2, 0);
 
-    wct.add_player(1, 1, 1, 1000, 0, true);
+    wct.add_player(1, 1, 1, 1, 0, true);
     wct.add_player(12, 1, 1, 1, 0, false);
     wct.add_player(13, 1, 1, 1, 0, false);
     wct.add_player(14, 1, 1, 1, 0, false);
@@ -40,6 +40,7 @@ int main(){
     //wct.remove_player(210); <==== The group isn't valid anymore and
     // threrefore removed from validTeams and then also from teams
     // line 141 world_cup_t.cpp
+    // wct.update_player_stats(1, 1, 1000, 0);
 
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
@@ -64,6 +65,7 @@ int main(){
     if(wct.get_all_players_count(-1).status() == StatusType::SUCCESS)
         cout << wct.get_all_players_count(-1).ans() << endl;
 
+    wct.remove_team(2);
     /*
     wct.add_team(3, 0);
     wct.add_player(30, 3, 1, 2, 10, false);
@@ -76,6 +78,8 @@ int main(){
     cout << wct.get_closest_player(32, 3).ans() << endl;
     cout << wct.get_closest_player(33, 3).ans() << endl;
      */
+
+    //Test unite teams
 
     return 0;
 }

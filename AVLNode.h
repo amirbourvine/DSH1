@@ -60,7 +60,8 @@ public:
 
     output_t<AVLNode<T>*> insert(const T& val);
     output_t<AVLNode<T>*> remove(const T& val);
-    int inorder(AVLNode<T>* root, T* *arr, int size, int ind);
+    int inorder(AVLNode<T>* root, int size, int ind, void (*pFunction)(const T& t));
+    int inorderToArr(AVLNode<T>* root, T* *arr, int size, int ind);
     AVLNode<T>* unite(AVLNode<T>* other);
     AVLNode<T>* findMax();
     AVLNode<T>* findMin();
@@ -685,21 +686,27 @@ AVLNode<T> *AVLNode<T>::removeTwoChildren(AVLNode<T> *node) {
     }
 }
 
+template<class T>
+int AVLNode<T>::inorder(AVLNode<T>* root, int size, int ind, void (*pFunction)(const T& t)){
+    return 0;
+}
 
 template<class T>
-int AVLNode<T>::inorder(AVLNode<T> *root, T **arr, int size, int i) {
+int AVLNode<T>::inorderToArr(AVLNode<T> *root, T **arr, int size, int ind) {
     if(root == nullptr){
-        return i;
+        return ind;
     }
-    i = inorder(root->left, arr, size, i);
-    if(i<size) {
-        arr[i] = &root->key;
-        i++;
+
+    ind = inorderToArr(root->left, arr, size, ind);
+    if(ind < size) {
+        arr[ind] = &root->key;
+        ind++;
     }
     else{
-        return i;
+        return ind;
     }
-    return inorder(root->right, arr, size, i);
+
+    inorderToArr(root->right, arr, size, ind);
 }
 
 template<class T>

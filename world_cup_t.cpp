@@ -25,9 +25,11 @@ StatusType world_cup_t::add_team(int teamId, int points){
     if(teamId <= 0 || points < 0)
         return StatusType::INVALID_INPUT;
 
-    try {
-        shared_ptr<Team> t(new Team(teamId, points));
+    shared_ptr<Team> t(new Team(teamId, points));
+    if(teams->find(t).status() != StatusType::FAILURE)
+        return StatusType::FAILURE;
 
+    try {
         if(teams->insert(t) != StatusType::SUCCESS)
             return StatusType::SUCCESS;
     }
@@ -327,6 +329,73 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
 
     return player->getClosestPlayerId();
 }
+
+void addGamesToPlayer(const shared_ptr<Player>& p){
+    p->setGamesPlayedWithoutTeam(p->getGamesPlayedWithoutTeam() + p->getTeam()->getGamesPlayedAsTeam());
+}
+StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
+    if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <=0 || teamId1 == teamId2)
+        return StatusType::FAILURE;
+
+    shared_ptr<Team> team1(new Team(teamId1));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = validTeams->find(team1);
+    if(out1.status() != StatusType::SUCCESS) {
+        return out1.status();
+    }
+
+    team1 = *(out1.ans()->getKey().ans());
+
+    shared_ptr<Team> team2(new Team(teamId2));
+    output_t<AVLNode<shared_ptr<Team>>*> out2 = validTeams->find(team2);
+
+    if(out2.status() != StatusType::SUCCESS) {
+        return out2.status();
+    }
+
+    team2 = *(out2.ans()->getKey().ans());
+
+    shared_ptr<Team> newTeam(new Team(newTeamId, team1->getPoints() + team2->getPoints()));
+    if(teams->find(newTeam).status() != StatusType::FAILURE)
+        return StatusType::FAILURE;
+
+    if(team1->isValid()){
+        if(validTeams->remove(team1) != StatusType::SUCCESS)
+            return validTeams->remove(team1);
+    }
+
+    if(team2->isValid()){
+        if(validTeams->remove(team2) != StatusType::SUCCESS)
+            return validTeams->remove(team2);
+    }
+
+    if(teams->remove(team1) != StatusType::SUCCESS)
+        return validTeams->remove(team1);
+
+    if(teams->remove(team2) != StatusType::SUCCESS)
+        return validTeams->remove(team2);
+
+    newTeam->setGoalKeepersAmount(team1->getGoalKeepersAmount() + team2->getGoalKeepersAmount());
+
+    newTeam->setGamesPlayedAsTeam(0);
+    team1->inOrderPlayers(&addGamesToPlayer);
+    team2->inOrderPlayers(&addGamesToPlayer);
+
+    newTeam->setTopScorer((team1->getTopScorer()->compare(*team2->getTopScorer())
+                           == team1->getTopScorer()->getPlayerId()) ? team1->getTopScorer() : team2->getTopScorer());
+
+    newTeam->mergeTeams(team1, team2);
+
+    if(newTeam->isValid()) {
+        if(validTeams->insert(newTeam) != StatusType::SUCCESS)
+            return validTeams->insert(newTeam);
+    }
+
+    if(teams->insert(newTeam) != StatusType::SUCCESS)
+        return teams->insert(newTeam);
+
+    return StatusType::SUCCESS;
+}
+
 
 
 
