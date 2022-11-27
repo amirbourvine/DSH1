@@ -1,9 +1,7 @@
 # DS_WET1
 באגים
-שחרור זכרון בvalidTeam גורר שחרור זכרון גם בteam
 בשימוש בclosestPlayer בחיפוש איבר גדול מלמעלה ומלמטה תמיד מוחזר nullptr
-מימוש הפונקציה Inorder והפונקציות amountInRange inorderToArrInRange
-הפונק Unite לא עובדת על shared_ptr וגם על עצים ריקים
+getAllPlayers works and tested on clion but not on the server
 
 
 עצי AVL
