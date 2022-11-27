@@ -155,3 +155,8 @@ void Team::mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2){
     //teamPlayersByID->unite(&*(team1->teamPlayersByID));
 }
 
+void Team::playersIntoArr(shared_ptr<Player> **arr){
+    teamPlayersByScore->inorderToArr(arr, playersCount);
+}
+
+

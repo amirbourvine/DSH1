@@ -17,7 +17,7 @@ world_cup_t::world_cup_t():
         teams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
         validTeams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
         players(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
-        playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
+        playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByScore, &isEqualByID)),
         top_scorer(nullptr),
         playersCount(0){}
 
@@ -392,6 +392,42 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 
     if(teams->insert(newTeam) != StatusType::SUCCESS)
         return teams->insert(newTeam);
+
+    return StatusType::SUCCESS;
+}
+
+StatusType world_cup_t::get_all_players(int teamId, int* const output){
+    if(teamId == 0 || output == NULL){
+        return StatusType::INVALID_INPUT;
+    }
+
+    if(teamId > 0){
+        shared_ptr<Team> team(new Team(teamId));
+        output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+        if(out1.status() != StatusType::SUCCESS) {
+            return out1.status();
+        }
+
+        team = *(out1.ans()->getKey().ans());
+
+        if(team->getPlayersCount() == 0)
+            return StatusType::FAILURE;
+
+        shared_ptr<Player>** arr;
+        team->playersIntoArr(arr);
+        for(int i = 0; i < team->getPlayersCount(); ++i)
+            output[i] = (*arr[i])->getPlayerId();
+
+        return StatusType::SUCCESS;
+    }
+
+    if(playersCount == 0)
+        return StatusType::FAILURE;
+
+    shared_ptr<Player>** arr;
+    playersByScore->inorderToArr(arr, playersCount);
+    for(int i = 0; i < playersCount; ++i)
+        output[i] = (*arr[i])->getPlayerId();
 
     return StatusType::SUCCESS;
 }

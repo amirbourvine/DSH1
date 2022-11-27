@@ -66,13 +66,14 @@ int main(){
         cout << wct.get_all_players_count(-1).ans() << endl;
 
     wct.remove_team(2);
-    /*
+
     wct.add_team(3, 0);
-    wct.add_player(30, 3, 1, 2, 10, false);
+    wct.add_player(30, 3, 1, 200, 10, false);
     wct.add_player(31, 3, 1, 2, 2, false);
     wct.add_player(32, 3, 1, 2, 4, false);
     wct.add_player(33, 3, 1, 3, 10, false);
 
+    /*
     cout << wct.get_closest_player(30, 3).ans() << endl;
     cout << wct.get_closest_player(31, 3).ans() << endl;
     cout << wct.get_closest_player(32, 3).ans() << endl;
@@ -80,6 +81,23 @@ int main(){
      */
 
     //Test unite teams
+
+
+     //Tests for get all players
+    /*
+    int output[4];
+    wct.get_all_players(3, output);
+    for(int i = 0; i < 4; ++i)
+        cout << output[i] << " ";
+    cout << endl;
+     */
+
+    /*
+    wct.get_all_players(-1, output);
+    for(int i = 0; i < 4; ++i)
+        cout << output[i] << " ";
+    cout << endl;
+    */
 
     return 0;
 }
