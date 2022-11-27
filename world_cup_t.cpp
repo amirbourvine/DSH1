@@ -431,21 +431,38 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     return StatusType::SUCCESS;
 }
-/*
+
+bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
+    return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
+}
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
     int validTeamsAmount = validTeams->getSize();
-    shared_ptr<Team>* teamsPlaying[validTeamsAmount];
-    for(int i = 0; i < validTeamsAmount; ++i)
-        teamsPlaying[i] = nullptr;
+    int teamsPlayingAmount = validTeams->inRangeAmount(validTeamsAmount, &isInRange);
+    if(teamsPlayingAmount == 0)
+        return StatusType::FAILURE;
 
-    //Find teamsPlaying with a return value of its size
+    shared_ptr<Team>* teamsPlayingArr[teamsPlayingAmount];
 
-    return StatusType::SUCCESS;
+    validTeams->inorderToArrInRange(teamsPlayingArr, validTeamsAmount, &isInRange);
+
+    int winningTeamId = (*teamsPlayingArr[0])->getTeamId();
+    int winningTeamWinningRate = (*teamsPlayingArr[0])->getWinningRate();
+    for(int i = 1; i < teamsPlayingAmount; ++i){
+        if(((*teamsPlayingArr[i])->getWinningRate() > winningTeamWinningRate) ||
+                ((*teamsPlayingArr[i])->getWinningRate() == winningTeamWinningRate &&
+                        (*teamsPlayingArr[i])->getTeamId() > winningTeamId))
+            winningTeamId = (*teamsPlayingArr[i])->getTeamId();
+
+        winningTeamWinningRate += 3 + (*teamsPlayingArr[i])->getWinningRate();
+    }
+
+
+    return winningTeamId;
 }
- */
+
 
 
 

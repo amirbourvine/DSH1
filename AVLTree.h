@@ -33,6 +33,9 @@ public:
     StatusType remove(const T& val);
     void inorder(int size, void (*pFunction)(const T& t));
     void inorderToArr(T* *arr, int size);
+    void inorderToArrInRange(T* *arr, int size, bool (*pFunction)(const T& t, int min, int max));
+    int inRangeAmount(int size, bool (*pFunction)(const T& t, int min, int max));
+
     void unite(AVLTree<T>* other);
     AVLNode<T>* findMax();
     output_t<AVLNode<T>*> findAbove(const T& val);
@@ -133,6 +136,16 @@ void AVLTree<T>::inorderToArr(T **arr, int size) {
     this->root->inorderToArr(this->root, arr, size, 0);
 }
 
+template<class T>
+void AVLTree<T>::inorderToArrInRange(T* *arr, int size,
+                         bool (*pFunction)(const T& t, int min, int max)){
+    this->root->inorderToArrInRange(this->root, arr, size, 0, pFunction);
+}
+
+template<class T>
+int AVLTree<T>::inRangeAmount(int size, bool (*pFunction)(const T& t, int min, int max)){
+    return this->root->inRangeAmount(this->root, size, 0, pFunction);
+}
 
 template<class T>
 AVLNode<T> *AVLTree<T>::findMax() {

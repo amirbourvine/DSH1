@@ -62,6 +62,9 @@ public:
     output_t<AVLNode<T>*> remove(const T& val);
     int inorder(AVLNode<T>* root, int size, int ind, void (*pFunction)(const T& t));
     int inorderToArr(AVLNode<T>* root, T* *arr, int size, int ind);
+    void inorderToArrInRange(AVLNode<T>* root, T* *arr, int size, int ind, bool (*pFunction)(const T& t, int min, int max));
+    int inRangeAmount(AVLNode<T>* root, int size, int ind, bool (*pFunction)(const T& t, int min, int max));
+
     AVLNode<T>* unite(AVLNode<T>* other);
     AVLNode<T>* findMax();
     AVLNode<T>* findMin();
@@ -708,6 +711,17 @@ int AVLNode<T>::inorderToArr(AVLNode<T> *root, T **arr, int size, int ind) {
 
     inorderToArr(root->right, arr, size, ind);
 }
+
+template<class T>
+void AVLNode<T>::inorderToArrInRange(AVLNode<T> *root, T **arr, int size, int ind,
+                         bool (*pFunction)(const T& t, int min, int max)){
+}
+
+template<class T>
+int AVLNode<T>::inRangeAmount(AVLNode<T>* root, int size, int ind, bool (*pFunction)(const T& t, int min, int max)){
+    return 0;
+}
+
 
 template<class T>
 AVLNode<T> *AVLNode<T>::findMax() {

@@ -2,7 +2,9 @@
 באגים
 שחרור זכרון בvalidTeam גורר שחרור זכרון גם בteam
 בשימוש בclosestPlayer בחיפוש איבר גדול מלמעלה ומלמטה תמיד מוחזר nullptr
+מימוש הפונקציה Inorder והפונקציות amountInRange inorderToArrInRange
 הפונק Unite לא עובדת על shared_ptr וגם על עצים ריקים
+
 
 עצי AVL
 
