@@ -178,8 +178,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int s
         return remove_player(player->getPlayerId());
 
     if(add_player(player->getPlayerId(), player->getTeam()->getTeamId(),
-                  player->getGamesPlayedWithoutTeam(),
-                  player->getGoals(), player->getCards(),
+                  player->getGamesPlayedWithoutTeam() + gamesPlayed,
+                  player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
                   player->isGoalKeeper()) != StatusType::SUCCESS)
         return add_player(player->getPlayerId(), player->getTeam()->getTeamId(),
                           player->getGamesPlayedWithoutTeam() + gamesPlayed,
@@ -428,7 +428,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     return StatusType::SUCCESS;
 }
-/*
+
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
@@ -447,7 +447,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     int winningTeamId = (*teamsPlayingArr[0])->getTeamId();
     int winningTeamWinningRate = (*teamsPlayingArr[0])->getWinningRate();
+    cout << "team id "<< winningTeamId << " wr is " << winningTeamWinningRate << endl;
     for(int i = 1; i < teamsPlayingAmount; ++i){
+        cout << "team id " << (*teamsPlayingArr[i])->getTeamId() << " wr is " << (*teamsPlayingArr[i])->getWinningRate() << endl;
         if(((*teamsPlayingArr[i])->getWinningRate() > winningTeamWinningRate) ||
                 ((*teamsPlayingArr[i])->getWinningRate() == winningTeamWinningRate &&
                         (*teamsPlayingArr[i])->getTeamId() > winningTeamId))
@@ -459,7 +461,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return winningTeamId;
 }
- */
+
 
 void world_cup_t::printPlayersByTeamId(int teamId){
     shared_ptr<Team> team(new Team(teamId));

@@ -42,12 +42,11 @@ int main(){
         cout << "Success" << endl;
 
     wct.add_player(220, 2, 1, 1, 0, false);
-
     if(wct.get_num_played_games(220).status() == StatusType::SUCCESS)
         cout << wct.get_num_played_games(220).ans() << endl;
 
     if(wct.get_team_points(1).status() == StatusType::SUCCESS)
-        cout << wct.get_team_points(1).ans() << endl;
+        cout << "team 1 points: " << wct.get_team_points(1).ans() << endl;
 
     if(wct.get_top_scorer(2).status() == StatusType::SUCCESS)
         cout << wct.get_top_scorer(2).ans() << endl;
@@ -60,8 +59,6 @@ int main(){
 
     if(wct.get_all_players_count(-1).status() == StatusType::SUCCESS)
         cout << wct.get_all_players_count(-1).ans() << endl;
-
-    wct.remove_team(2);
 
     wct.add_team(3, 0);
     wct.add_player(30, 3, 1, 200, 10, false);
@@ -87,11 +84,11 @@ int main(){
     wct.add_player(40, 4, 1, 2, 4, false);
     wct.add_player(41, 4, 1, 3, 10, false);
 
-    /*
     if(wct.unite_teams(3, 4, 34) == StatusType::SUCCESS)
         cout << "Success but this time a great one " << endl;
     wct.printPlayersByTeamId(34);
 
+    /*
      //Tests for get all players
     int output[12];
     wct.get_all_players(34, output);
@@ -101,7 +98,7 @@ int main(){
      */
 
     //Test knockout
-
+    cout << wct.knockout_winner(1, 5).ans();
 
     return 0;
 }
