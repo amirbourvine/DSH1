@@ -159,4 +159,8 @@ void Team::playersIntoArr(shared_ptr<Player> **arr){
     teamPlayersByScore->inorderToArr(arr, playersCount);
 }
 
+void Team::printPlayersById(){
+    teamPlayersByID->print2D();
+}
+
 

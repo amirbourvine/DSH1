@@ -37,9 +37,6 @@ int main(){
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
 
-    // threrefore removed from validTeams and then also from teams
-    // line 141 world_cup_t.cpp
-
     wct.update_player_stats(1, 1, 1000, 0);
     if(wct.play_match(1, 2) == StatusType::SUCCESS)
         cout << "Success" << endl;
@@ -79,15 +76,29 @@ int main(){
     cout << wct.get_closest_player(33, 3).ans() << endl;
      */
 
-    //Test unite teams
+    //Test unites teams
+    wct.add_team(4, 0);
+    wct.add_player(34, 4, 1, 200, 10, true);
+    wct.add_player(35, 4, 1, 2, 2, false);
+    wct.add_player(36, 4, 1, 2, 4, false);
+    wct.add_player(37, 4, 1, 3, 10, false);
+    wct.add_player(38, 4, 1, 200, 10, false);
+    wct.add_player(39, 4, 1, 2, 2, false);
+    wct.add_player(40, 4, 1, 2, 4, false);
+    wct.add_player(41, 4, 1, 3, 10, false);
 
+    /*
+    if(wct.unite_teams(3, 4, 34) == StatusType::SUCCESS)
+        cout << "Success but this time a great one " << endl;
+    wct.printPlayersByTeamId(34);
 
      //Tests for get all players
-    int output[4];
-    wct.get_all_players(3, output);
-    for(int i = 0; i < 4; ++i)
+    int output[12];
+    wct.get_all_players(34, output);
+    for(int i = 0; i < 12; ++i)
         cout << output[i] << " ";
     cout << endl;
+     */
 
     //Test knockout
 
