@@ -53,6 +53,8 @@ public:
 
     void mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2);
     void playersIntoArr(shared_ptr<Player> **arr);
+
+    void printPlayersById();
 };
 
 bool isLargerByID(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);

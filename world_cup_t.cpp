@@ -335,7 +335,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
         return StatusType::FAILURE;
 
     shared_ptr<Team> team1(new Team(teamId1));
-    output_t<AVLNode<shared_ptr<Team>>*> out1 = validTeams->find(team1);
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team1);
     if(out1.status() != StatusType::SUCCESS) {
         return out1.status();
     }
@@ -343,7 +343,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     team1 = *(out1.ans()->getKey().ans());
 
     shared_ptr<Team> team2(new Team(teamId2));
-    output_t<AVLNode<shared_ptr<Team>>*> out2 = validTeams->find(team2);
+    output_t<AVLNode<shared_ptr<Team>>*> out2 = teams->find(team2);
 
     if(out2.status() != StatusType::SUCCESS) {
         return out2.status();
@@ -428,7 +428,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     return StatusType::SUCCESS;
 }
-
+/*
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
@@ -437,13 +437,13 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
         return StatusType::INVALID_INPUT;
 
     int validTeamsAmount = validTeams->getSize();
-    int teamsPlayingAmount = validTeams->inRangeAmount(validTeamsAmount, &isInRange);
+    int teamsPlayingAmount = validTeams->inRangeAmount(&isInRange);
     if(teamsPlayingAmount == 0)
         return StatusType::FAILURE;
 
     shared_ptr<Team>* teamsPlayingArr[teamsPlayingAmount];
 
-    validTeams->inorderToArrInRange(teamsPlayingArr, validTeamsAmount, &isInRange);
+    validTeams->inorderToArrInRange(teamsPlayingArr, teamsPlayingAmount, &isInRange);
 
     int winningTeamId = (*teamsPlayingArr[0])->getTeamId();
     int winningTeamWinningRate = (*teamsPlayingArr[0])->getWinningRate();
@@ -459,6 +459,20 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return winningTeamId;
 }
+ */
+
+void world_cup_t::printPlayersByTeamId(int teamId){
+    shared_ptr<Team> team(new Team(teamId));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+    if(out1.status() != StatusType::SUCCESS) {
+        return;
+    }
+
+    team = *(out1.ans()->getKey().ans());
+    cout << "Amount of Players: " << team->getPlayersCount() << endl;
+    team->printPlayersById();
+}
+
 
 
 

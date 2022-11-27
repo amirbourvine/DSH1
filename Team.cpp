@@ -52,7 +52,7 @@ output_t<AVLNode<shared_ptr<Player>>*> Team::findPlayerByID(int playerId) const{
 }
 
 void Team::inOrderPlayers(void (*pFunction)(const shared_ptr<Player>& t)){
-    teamPlayersByID->inorder(playersCount, pFunction);
+    //teamPlayersByID->inorder(playersCount, pFunction);
 }
 
 int Team::getTeamId() const {
@@ -157,6 +157,10 @@ void Team::mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2){
 
 void Team::playersIntoArr(shared_ptr<Player> **arr){
     teamPlayersByScore->inorderToArr(arr, playersCount);
+}
+
+void Team::printPlayersById(){
+    teamPlayersByID->print2D();
 }
 
 
