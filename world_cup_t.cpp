@@ -423,12 +423,13 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     shared_ptr<Player>* arr[playersCount];
     playersByScore->inorderToArr(arr, playersCount);
+
     for(int i = 0; i < playersCount; ++i)
         output[i] = (*arr[i])->getPlayerId();
 
     return StatusType::SUCCESS;
 }
-/*
+
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
@@ -459,7 +460,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return winningTeamId;
 }
- */
+
 
 void world_cup_t::printPlayersByTeamId(int teamId){
     shared_ptr<Team> team(new Team(teamId));

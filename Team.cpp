@@ -149,10 +149,11 @@ StatusType Team::remove_player(const shared_ptr<Player> p){
 void Team::mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2){
     playersCount = team1->playersCount + team2->playersCount;
 
-    //AVLTree<shared_ptr<Player>>* temp = new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID);
-    //temp->unite(temp);
+    teamPlayersByID->unite(&*(team1->teamPlayersByID));
+    teamPlayersByID->unite(&*(team2->teamPlayersByID));
 
-    //teamPlayersByID->unite(&*(team1->teamPlayersByID));
+    teamPlayersByScore->unite(&*(team1->teamPlayersByScore));
+    teamPlayersByScore->unite(&*(team2->teamPlayersByScore));
 }
 
 void Team::playersIntoArr(shared_ptr<Player> **arr){

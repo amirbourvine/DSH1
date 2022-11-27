@@ -769,6 +769,9 @@ int AVLNode<T>::getSize(AVLNode<T> * node) {
     if(node== nullptr){
         return 0;
     }
+    if(node->isEmpty){
+        return 0;
+    }
     return getSize(node->left)+ getSize(node->right)+1;
 }
 
@@ -778,8 +781,8 @@ AVLNode<T>* AVLNode<T>::unite(AVLNode<T> *other) {
     int size2 = other->getSize(other);
     T* *arr1 = new T*[size1];
     T* *arr2 = new T*[size2];
-    this->inorder(this,arr1, size1,0);
-    other->inorder(other,arr2, size2,0);
+    this->inorderToArr(this,arr1, size1,0);
+    other->inorderToArr(other,arr2, size2,0);
 
     shared_ptr<T> *arr2new = new shared_ptr<T>[size2];
     for(int i = 0; i<size2; i++){

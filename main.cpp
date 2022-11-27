@@ -87,7 +87,7 @@ int main(){
     wct.add_player(40, 4, 1, 2, 4, false);
     wct.add_player(41, 4, 1, 3, 10, false);
 
-    /*
+
     if(wct.unite_teams(3, 4, 34) == StatusType::SUCCESS)
         cout << "Success but this time a great one " << endl;
     wct.printPlayersByTeamId(34);
@@ -98,7 +98,7 @@ int main(){
     for(int i = 0; i < 12; ++i)
         cout << output[i] << " ";
     cout << endl;
-     */
+
 
     //Test knockout
 
