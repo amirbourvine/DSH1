@@ -431,7 +431,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     return StatusType::SUCCESS;
 }
-
+/*
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
@@ -445,6 +445,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return StatusType::SUCCESS;
 }
+ */
 
 
 
