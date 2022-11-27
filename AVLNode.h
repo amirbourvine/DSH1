@@ -60,10 +60,10 @@ public:
 
     output_t<AVLNode<T>*> insert(const T& val);
     output_t<AVLNode<T>*> remove(const T& val);
-    int inorder(AVLNode<T>* root, int size, int ind, void (*pFunction)(const T& t));
+    void inorder(AVLNode<T>* root, void (*pFunction)(T& t));
     int inorderToArr(AVLNode<T>* root, T* *arr, int size, int ind);
-    void inorderToArrInRange(AVLNode<T>* root, T* *arr, int size, int ind, bool (*pFunction)(const T& t, int min, int max));
-    int inRangeAmount(AVLNode<T>* root, int size, int ind, bool (*pFunction)(const T& t, int min, int max));
+    int inorderToArrInRange(AVLNode<T>* root, T* *arr, int size, int ind, bool (*pFunction)(const T& t, int min, int max));
+    int inRangeAmount(AVLNode<T>* root, bool (*pFunction)(const T& t, int min, int max), int num);
 
     AVLNode<T>* unite(AVLNode<T>* other);
     AVLNode<T>* findMax();
@@ -72,6 +72,9 @@ public:
     output_t<AVLNode<T>*> findUnder(AVLNode<T> *root, const T& val);//in case of receiving the smallest, return the smallest
 
     int getSize(AVLNode<T>* node);
+
+
+
 
     //to delete:
     void print2DUtil(AVLNode<T>* root, int space);
@@ -690,8 +693,14 @@ AVLNode<T> *AVLNode<T>::removeTwoChildren(AVLNode<T> *node) {
 }
 
 template<class T>
-int AVLNode<T>::inorder(AVLNode<T>* root, int size, int ind, void (*pFunction)(const T& t)){
-    return 0;
+void AVLNode<T>::inorder(AVLNode<T>* root, void (*pFunction)(T& t)){
+    if(root == nullptr){
+        return;
+    }
+
+    inorder(root->left, pFunction);
+    pFunction(root->key);
+    inorder(root->right, pFunction);
 }
 
 template<class T>
@@ -713,13 +722,38 @@ int AVLNode<T>::inorderToArr(AVLNode<T> *root, T **arr, int size, int ind) {
 }
 
 template<class T>
-void AVLNode<T>::inorderToArrInRange(AVLNode<T> *root, T **arr, int size, int ind,
+int AVLNode<T>::inorderToArrInRange(AVLNode<T> *root, T **arr, int size, int ind,
                          bool (*pFunction)(const T& t, int min, int max)){
+    if(root == nullptr){
+        return ind;
+    }
+
+    ind = inorderToArrInRange(root->left, arr, size, ind);
+    if(ind < size) {
+        if(pFunction(root->key, min, max)) {
+            arr[ind] = &root->key;
+            ind++;
+        }
+    }
+    else{
+        return ind;
+    }
+
+    inorderToArrInRange(root->right, arr, size, ind);
 }
 
 template<class T>
-int AVLNode<T>::inRangeAmount(AVLNode<T>* root, int size, int ind, bool (*pFunction)(const T& t, int min, int max)){
-    return 0;
+int AVLNode<T>::inRangeAmount(AVLNode<T>* root, bool (*pFunction)(const T& t, int min, int max), int num){
+    if(root == nullptr){
+        return 0;
+    }
+
+    if(pFunction(root->key, min, max)) {
+        return inRangeAmount(root->left, pFunction, num) + 1 + inRangeAmount(root->right, pFunction, num);
+    }
+    else{
+        return inRangeAmount(root->left, pFunction, num) + inRangeAmount(root->right, pFunction, num);
+    }
 }
 
 
