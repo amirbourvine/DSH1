@@ -42,12 +42,11 @@ int main(){
         cout << "Success" << endl;
 
     wct.add_player(220, 2, 1, 1, 0, false);
-
     if(wct.get_num_played_games(220).status() == StatusType::SUCCESS)
         cout << wct.get_num_played_games(220).ans() << endl;
 
     if(wct.get_team_points(1).status() == StatusType::SUCCESS)
-        cout << wct.get_team_points(1).ans() << endl;
+        cout << "team 1 points: " << wct.get_team_points(1).ans() << endl;
 
     if(wct.get_top_scorer(2).status() == StatusType::SUCCESS)
         cout << wct.get_top_scorer(2).ans() << endl;
@@ -101,7 +100,7 @@ int main(){
 
 
     //Test knockout
-
+    cout << wct.knockout_winner(1, 5).ans();
 
     return 0;
 }
