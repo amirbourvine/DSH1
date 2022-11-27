@@ -38,6 +38,7 @@ public:
     output_t<int> get_closest_player(int playerId, int teamId);
     StatusType unite_teams(int teamId1, int teamId2, int newTeamId);
     StatusType get_all_players(int teamId, int* const output);
+    output_t<int> knockout_winner(int minTeamId, int maxTeamId);
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);

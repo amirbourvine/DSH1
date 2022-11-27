@@ -84,20 +84,12 @@ int main(){
 
 
      //Tests for get all players
-    /*
     int output[4];
     wct.get_all_players(3, output);
     for(int i = 0; i < 4; ++i)
         cout << output[i] << " ";
     cout << endl;
-     */
 
-    /*
-    wct.get_all_players(-1, output);
-    for(int i = 0; i < 4; ++i)
-        cout << output[i] << " ";
-    cout << endl;
-    */
 
     return 0;
 }
