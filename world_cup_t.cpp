@@ -165,6 +165,18 @@ StatusType world_cup_t::remove_player(int playerId){
             return validTeams->remove(team);
         }
 
+        shared_ptr<Team> next_valid = team->getNextValidTeam();
+        shared_ptr<Team> prev_valid = team->getPrevValidTeam();
+
+        team->setNextValidTeam(shared_ptr<Team>(nullptr));
+        team->setPrevValidTeam(shared_ptr<Team>(nullptr));
+
+        if(next_valid != nullptr) {
+            next_valid->setPrevValidTeam(prev_valid);
+        }
+        if(prev_valid != nullptr) {
+            prev_valid->setNextValidTeam(next_valid);
+        }
 
     }
 
