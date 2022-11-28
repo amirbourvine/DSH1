@@ -18,6 +18,8 @@ private:
 
     int playersCount;
 
+
+    shared_ptr<Team> findMinValid(int minid, int maxid);
 public:
     world_cup_t();
     world_cup_t(world_cup_t& other) = delete;
