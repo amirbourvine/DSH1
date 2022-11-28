@@ -1,5 +1,5 @@
 #include <iostream>
-#include "world_cup_t.h"
+#include "worldcup23a1.h"
 
 using namespace std;
 bool isLarger(const int& n, const int& m){

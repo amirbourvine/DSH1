@@ -697,6 +697,9 @@ void AVLNode<T>::inorder(AVLNode<T>* root, void (*pFunction)(T& t)){
     if(root == nullptr){
         return;
     }
+    if(root->isEmpty){
+        return;
+    }
 
     inorder(root->left, pFunction);
     pFunction(root->key);
