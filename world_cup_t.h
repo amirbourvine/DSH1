@@ -42,8 +42,11 @@ public:
     StatusType get_all_players(int teamId, int* const output);
     output_t<int> knockout_winner(int minTeamId, int maxTeamId);
 
+    void printPlayer(int playerId);
+    void printAllPlayers();
     void printPlayersByTeamId(int teamId);
     void printPlayersByTeamScore(int teamId);
+    void printTeams();
     void printValidTeams();
 };
 

@@ -187,12 +187,17 @@ void Team::playersIntoArr(shared_ptr<Player> **arr){
     teamPlayersByScore->inorderToArr(arr, playersCount);
 }
 
+void printPlayer(shared_ptr<Player>& p){
+    cout << *p;
+}
 void Team::printPlayersById(){
-    teamPlayersByID->print2D();
+    teamPlayersByID->inorder(&printPlayer);
+    cout << endl;
 }
 
 void Team::printPlayersByScore(){
-    teamPlayersByScore->print2D();
+    teamPlayersByScore->inorder(&printPlayer);
+    cout << endl;
 }
 
 
