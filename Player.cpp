@@ -118,12 +118,11 @@ int Player::compare(Player& other) const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& p){
-    /*
     return os << "playerId: " << p.playerId << ", gamesPlayedWithoutTeam: " << p.gamesPlayedWithoutTeam
               << ", goals: " << p.goals << ", cards: " << p.cards << ", goalKeeper: " << p.goalKeeper
-              << ", teamId: " << p.teamId << std::endl;
-              */
-    return os << "playerId: " << p.playerId << std::endl;
+               << std::endl;
+
+    //return os << "playerId: " << p.playerId << std::endl;
 }
 
 bool operator==(const Player& p1, const Player& p2){
