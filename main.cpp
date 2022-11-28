@@ -85,49 +85,57 @@ int main(){
     for(; playersCount <= 11; ++playersCount){
         wct.add_player(playersCount, 1,1, 1, 1, false);
     }
-    /*
 
-wct.add_player(1, 1, 1, 1000, 0, true);
-wct.add_player(12, 1, 1, 1, 0, false);
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.update_player_stats(2, 0, 1, 0);
+    wct.update_player_stats(3, 0, 1, 1);
+    wct.printPlayersByTeamScore(1);
 
-wct.printPlayersByTeamId(1);
-wct.printPlayersByTeamScore(1);
-wct.add_player(12, 1, 1, 1, 0, false);
-wct.add_player(13, 1, 1, 1, 0, false);
-wct.add_player(14, 1, 1, 1, 0, false);
-wct.add_player(15, 1, 1, 1, 0, false);
-wct.add_player(16, 1, 1, 1, 0, false);
-wct.add_player(17, 1, 1, 1, 0, false);
-wct.add_player(18, 1, 1, 1, 0, false);
-wct.add_player(19, 1, 1, 1, 0, false);
-wct.add_player(20, 1, 1, 1, 0, false);
-wct.add_player(21, 1, 1, 1, 0, false);
+    //****************************Valid Team******************************************
+    cout << "*********************Valid Team********************************" << endl;
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.printValidTeams();
 
-wct.add_player(10, 2, 1, 2, 0, true);
-wct.add_player(120, 2, 1, 1, 0, false);
-wct.add_player(130, 2, 1, 1, 0, false);
-wct.add_player(140, 2, 1, 1, 0, false);
-wct.add_player(150, 2, 1, 1, 0, false);
-wct.add_player(160, 2, 1, 1, 0, false);
-wct.add_player(170, 2, 1, 1, 0, false);
-wct.add_player(180, 2, 1, 1, 0, false);
-wct.add_player(190, 2, 1, 1, 0, false);
-wct.add_player(200, 2, 1, 1, 0, false);
-wct.add_player(210, 2, 1, 1, 0, false);
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.remove_player(1);
+    wct.printValidTeams();
 
-wct.printValidTeams();
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.add_player(1, 1, 1, 1, 1, false);
+    wct.printValidTeams();
+    wct.remove_player(1);
+    wct.add_player(1, 1, 1, 1, 1, true);
 
-wct.remove_player(10);
-cout<<"GERAT"<<endl;
-wct.printValidTeams();
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.add_player(100, 1, 1, 1, 1, true);
+    wct.add_player(200, 1, 1, 1, 1, true);
+    wct.remove_player(100);
+    wct.remove_player(200);
 
-wct.add_player(10, 2, 1, 2, 0, true);
+    wct.printValidTeams();
 
-wct.printValidTeams();
+    //****************************play match******************************************
+    cout << "*********************play match********************************" << endl;
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.play_match(1, 2);
+    wct.printTeams();
 
-if(wct.knockout_winner(1,2).status()==StatusType::SUCCESS)
-    cout<<wct.knockout_winner(1,2).ans();
-    */
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.update_player_stats(1, 0, 5, 1);
+    wct.play_match(1, 2);
+    wct.printTeams();
+
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    wct.play_match(1, 1);
+    wct.printTeams();
 
    return 0;
 }

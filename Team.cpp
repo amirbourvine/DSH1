@@ -77,6 +77,7 @@ int Team::getPoints() const {
 }
 
 void Team::setPoints(int points) {
+    this->winningRate += points - this->points;
     Team::points = points;
 }
 
