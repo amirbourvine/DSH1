@@ -439,7 +439,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
-    int validTeamsAmount = validTeams->getSize();
+    //int validTeamsAmount = validTeams->getSize();
     int teamsPlayingAmount = validTeams->inRangeAmount(&isInRange,minTeamId, maxTeamId);
     if(teamsPlayingAmount == 0)
         return StatusType::FAILURE;

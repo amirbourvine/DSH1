@@ -10,7 +10,7 @@ bool isEqual(const int& n, const int& m){
 }
 int main(){
     world_cup_t wct;
-/*
+
     wct.add_team(1, 0);
     wct.add_team(2, 0);
 
@@ -65,7 +65,7 @@ int main(){
         cout << wct.get_all_players_count(-1).ans() << endl;
 
     wct.remove_team(2);
-*/
+
     wct.add_team(3, 0);
     wct.add_player(30, 3, 1, 200, 10, false);
     wct.add_player(31, 3, 1, 2, 2, false);
@@ -76,7 +76,7 @@ int main(){
     cout << wct.get_closest_player(31, 3).ans() << endl;
     cout << wct.get_closest_player(32, 3).ans() << endl;
     cout << wct.get_closest_player(33, 3).ans() << endl;
-/*
+
     //Test unites teams
     wct.add_team(4, 0);
     wct.add_player(34, 4, 1, 200, 10, true);
@@ -103,6 +103,6 @@ int main(){
 
     //Test knockout
     cout << wct.knockout_winner(1, 5).ans();
-*/
+
     return 0;
 }
