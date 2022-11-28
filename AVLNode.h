@@ -543,8 +543,10 @@ output_t<AVLNode<T>*> AVLNode<T>::remove(const T &val) {
             if (node->right == nullptr && node->left != nullptr) {
                 bottom = removeLeftChild(node);
             }
-            if(node->right != nullptr && node->left != nullptr){
-                bottom = removeTwoChildren(node);
+            else {
+                if (node->right != nullptr && node->left != nullptr) {
+                    bottom = removeTwoChildren(node);
+                }
             }
         }
     }
