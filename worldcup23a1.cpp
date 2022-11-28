@@ -495,30 +495,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 }
 
 
-void world_cup_t::printPlayersByTeamId(int teamId){
-    shared_ptr<Team> team(new Team(teamId));
-    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
-    if(out1.status() != StatusType::SUCCESS) {
-        return;
-    }
-
-    team = *(out1.ans()->getKey().ans());
-    cout << "Amount of Players: " << team->getPlayersCount() << endl;
-    team->printPlayersById();
-}
-
-void world_cup_t::printPlayersByTeamScore(int teamId){
-    shared_ptr<Team> team(new Team(teamId));
-    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
-    if(out1.status() != StatusType::SUCCESS) {
-        return;
-    }
-
-    team = *(out1.ans()->getKey().ans());
-    cout << "Amount of Players: " << team->getPlayersCount() << endl;
-    team->printPlayersByScore();
-}
-
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     shared_ptr<Team> temp = std::make_shared<Team>(minid);
     if(validTeams->find(temp).status()==StatusType::SUCCESS){
