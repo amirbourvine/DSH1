@@ -49,7 +49,11 @@ Team::Team(int teamId, int points) :
     teamPlayersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByScore, &isEqualByID)),
     playersCount(0),
     top_scorer(nullptr)
-{}
+{
+    shared_ptr<Team> temp1(nullptr);
+    this->prevValidTeam = temp1;
+    this->NextValidTeam = temp1;
+}
 
 std::ostream& operator<<(std::ostream& os, const Team& t){
     return os << "TeamId: " << t.teamId << std::endl;

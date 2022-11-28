@@ -93,8 +93,24 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             return team->add_player(p);
 
         if(team->isValid() && !validBeforePlayer){
-            if(validTeams->insert(team) != StatusType::SUCCESS)
+            if(validTeams->insert(team) != StatusType::SUCCESS) {
                 return validTeams->insert(shared_ptr<Team>(team));
+            }
+
+            AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(team).ans();
+            if(ptr != nullptr) {
+                team->setNextValidTeam(*(ptr->getKey().ans()));
+                if(team->getNextValidTeam() != nullptr)
+                    team->getNextValidTeam()->setPrevValidTeam(team);
+            }
+
+            ptr = validTeams->findUnder(team).ans();
+            if(ptr != nullptr){
+                team->setPrevValidTeam(*(ptr->getKey().ans()));
+                if(team->getPrevValidTeam() != nullptr)
+                    team->getPrevValidTeam()->setNextValidTeam(team);
+            }
+
         }
 
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
@@ -147,6 +163,8 @@ StatusType world_cup_t::remove_player(int playerId){
         shared_ptr<Team> team(player->getTeam());
         if(validTeams->remove(team) != StatusType::SUCCESS)
             return validTeams->remove(team);
+
+
     }
 
     --playersCount;

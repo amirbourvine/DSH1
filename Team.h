@@ -22,6 +22,8 @@ private:
     unique_ptr<AVLTree<shared_ptr<Player>>> teamPlayersByScore;
     int playersCount;
     shared_ptr<Player> top_scorer;
+    weak_ptr<Team> prevValidTeam;
+    weak_ptr<Team> NextValidTeam;
 
 public:
     Team(int teamId, int points = 0);
