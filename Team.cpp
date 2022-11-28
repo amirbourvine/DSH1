@@ -52,7 +52,7 @@ Team::Team(int teamId, int points) :
 {
     shared_ptr<Team> temp1(nullptr);
     this->prevValidTeam = temp1;
-    this->NextValidTeam = temp1;
+    this->nextValidTeam = temp1;
 }
 
 std::ostream& operator<<(std::ostream& os, const Team& t){
@@ -104,6 +104,13 @@ int Team::getPlayersCount() const {
     return playersCount;
 }
 
+shared_ptr<Team> Team::getNextValidTeam() const{
+    return nextValidTeam.lock();
+}
+shared_ptr<Team> Team::getPrevValidTeam() const{
+    return prevValidTeam.lock();
+}
+
 void Team::setPlayersCount(int playersCount) {
     Team::playersCount = playersCount;
 }
@@ -114,6 +121,13 @@ const shared_ptr<Player> &Team::getTopScorer() const {
 
 void Team::setTopScorer(const shared_ptr<Player> &topScorer) {
     top_scorer = topScorer;
+}
+
+void Team::setNextValidTeam(shared_ptr<Team> nextValidTeam){
+    this->nextValidTeam = nextValidTeam;
+}
+void Team::setPrevValidTeam(shared_ptr<Team> prevValidTeam){
+    this->prevValidTeam = prevValidTeam;
 }
 
 StatusType Team::add_player(const shared_ptr<Player> p) {

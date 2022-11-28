@@ -23,7 +23,7 @@ private:
     int playersCount;
     shared_ptr<Player> top_scorer;
     weak_ptr<Team> prevValidTeam;
-    weak_ptr<Team> NextValidTeam;
+    weak_ptr<Team> nextValidTeam;
 
 public:
     Team(int teamId, int points = 0);
@@ -48,6 +48,12 @@ public:
     void setPlayersCount(int playersCount);
     const shared_ptr<Player> &getTopScorer() const;
     void setTopScorer(const shared_ptr<Player> &topScorer);
+
+    shared_ptr<Team> getNextValidTeam() const;
+    shared_ptr<Team> getPrevValidTeam() const;
+
+    void setNextValidTeam(shared_ptr<Team>);
+    void setPrevValidTeam(shared_ptr<Team>);
 
     StatusType add_player(const shared_ptr<Player> p);
     StatusType remove_player(const shared_ptr<Player> p);
