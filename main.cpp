@@ -1,5 +1,4 @@
 #include <iostream>
-//#include "world_cup_t.h"
 #include "world_cup_t.h"
 
 using namespace std;
@@ -70,13 +69,13 @@ int main(){
     wct.add_team(3, 0);
     wct.add_player(30, 3, 1, 200, 10, false);
     wct.add_player(31, 3, 1, 2, 2, false);
-    //wct.add_player(32, 3, 1, 2, 4, false);
-    //wct.add_player(33, 3, 1, 3, 10, false);
+    wct.add_player(32, 3, 1, 2, 4, false);
+    wct.add_player(33, 3, 1, 3, 10, false);
 
     cout << wct.get_closest_player(30, 3).ans() << endl;
     cout << wct.get_closest_player(31, 3).ans() << endl;
-    //cout << wct.get_closest_player(32, 3).ans() << endl;
-    //cout << wct.get_closest_player(33, 3).ans() << endl;
+    cout << wct.get_closest_player(32, 3).ans() << endl;
+    cout << wct.get_closest_player(33, 3).ans() << endl;
 /*
     //Test unites teams
     wct.add_team(4, 0);

@@ -65,7 +65,7 @@ void Player::setBetterPlayer(shared_ptr<Player> betterPlayer) {
 }
 
 void Player::setWorsePlayer(shared_ptr<Player> WorsePlayer) {
-    Player::worsePlayer = worsePlayer;
+    Player::worsePlayer = WorsePlayer;
 }
 
 int Player::getClosestPlayerId() const{
@@ -113,8 +113,7 @@ int Player::compare(Player& other) const{
         return other.playerId;
 
     if(this->playerId > other.playerId){return this->playerId;}
-    if(this->playerId < other.playerId){return other.playerId;}
-    return -1;
+    else{return other.playerId;}
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& p){

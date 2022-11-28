@@ -106,14 +106,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             if(p->getBetterPlayer() != nullptr)
                 p->getBetterPlayer()->setWorsePlayer(p);
         }
-//        AVLNode<shared_ptr<Player>>* ptemp = playersByScore->findUnder(p).ans();
-//        if(ptemp== nullptr){
-//            cout<<"PROBLEM";
-//        }
-//        cout << "PLAYER ID:"<<p->getPlayerId()<<endl;
-//        cout << "UNDER ID:"<<(*ptemp->getKey().ans())->getPlayerId()<<endl;
 
-
+        ptemp = playersByScore->findUnder(p).ans();
         if(ptemp != nullptr){
             p->setWorsePlayer(*(ptemp->getKey().ans()));
             if(p->getWorsePlayer() != nullptr)
