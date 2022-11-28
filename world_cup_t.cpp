@@ -161,8 +161,9 @@ StatusType world_cup_t::remove_player(int playerId){
 
     if(!player->getTeam()->isValid() && validBeforePlayer){
         shared_ptr<Team> team(player->getTeam());
-        if(validTeams->remove(team) != StatusType::SUCCESS)
+        if(validTeams->remove(team) != StatusType::SUCCESS) {
             return validTeams->remove(team);
+        }
 
 
     }
