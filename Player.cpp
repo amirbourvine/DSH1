@@ -73,8 +73,9 @@ int Player::getClosestPlayerId() const{
         return playerId;
     if(worsePlayer.lock() != nullptr && betterPlayer.lock() == nullptr)
         return worsePlayer.lock()->playerId;
-    if(worsePlayer.lock() == nullptr && betterPlayer.lock() != nullptr)
+    if(worsePlayer.lock() == nullptr && betterPlayer.lock() != nullptr){
         return betterPlayer.lock()->playerId;
+    }
 
     if(abs(goals - worsePlayer.lock()->goals) < abs(goals - betterPlayer.lock()->goals))
         return worsePlayer.lock()->playerId;
@@ -111,7 +112,9 @@ int Player::compare(Player& other) const{
     if(this->cards > other.cards)
         return other.playerId;
 
-    return (this->playerId > other.playerId) ? this->playerId : other.playerId;
+    if(this->playerId > other.playerId){return this->playerId;}
+    if(this->playerId < other.playerId){return other.playerId;}
+    return -1;
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& p){

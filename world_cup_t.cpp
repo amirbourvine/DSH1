@@ -17,7 +17,7 @@ world_cup_t::world_cup_t():
         teams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
         validTeams(new AVLTree<shared_ptr<Team>>(&isLargerByID, &isEqualByID)),
         players(new AVLTree<shared_ptr<Player>>(&isLargerByID, &isEqualByID)),
-        playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByScore, &isEqualByID)),
+        playersByScore(new AVLTree<shared_ptr<Player>>(&isLargerByScore, &isEqualByScore)),
         top_scorer(nullptr),
         playersCount(0){}
 
@@ -100,14 +100,22 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
             top_scorer = shared_ptr<Player>(p);
 
-        if(playersByScore->findAbove(p).ans() != nullptr) {
-            p->setBetterPlayer(*(playersByScore->findAbove(p).ans()->getKey().ans()));
+        AVLNode<shared_ptr<Player>>* ptemp = playersByScore->findAbove(p).ans();
+        if(ptemp != nullptr) {
+            p->setBetterPlayer(*(ptemp->getKey().ans()));
             if(p->getBetterPlayer() != nullptr)
                 p->getBetterPlayer()->setWorsePlayer(p);
         }
+//        AVLNode<shared_ptr<Player>>* ptemp = playersByScore->findUnder(p).ans();
+//        if(ptemp== nullptr){
+//            cout<<"PROBLEM";
+//        }
+//        cout << "PLAYER ID:"<<p->getPlayerId()<<endl;
+//        cout << "UNDER ID:"<<(*ptemp->getKey().ans())->getPlayerId()<<endl;
 
-        if(playersByScore->findUnder(p).ans() != nullptr){
-            p->setWorsePlayer(*(playersByScore->findUnder(p).ans()->getKey().ans()));
+
+        if(ptemp != nullptr){
+            p->setWorsePlayer(*(ptemp->getKey().ans()));
             if(p->getWorsePlayer() != nullptr)
                 p->getWorsePlayer()->setBetterPlayer(p);
         }
@@ -474,6 +482,18 @@ void world_cup_t::printPlayersByTeamId(int teamId){
     team = *(out1.ans()->getKey().ans());
     cout << "Amount of Players: " << team->getPlayersCount() << endl;
     team->printPlayersById();
+}
+
+void world_cup_t::printPlayersByTeamScore(int teamId){
+    shared_ptr<Team> team(new Team(teamId));
+    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
+    if(out1.status() != StatusType::SUCCESS) {
+        return;
+    }
+
+    team = *(out1.ans()->getKey().ans());
+    cout << "Amount of Players: " << team->getPlayersCount() << endl;
+    team->printPlayersByScore();
 }
 
 

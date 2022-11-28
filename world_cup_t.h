@@ -41,6 +41,7 @@ public:
     output_t<int> knockout_winner(int minTeamId, int maxTeamId);
 
     void printPlayersByTeamId(int teamId);
+    void printPlayersByTeamScore(int teamId);
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);

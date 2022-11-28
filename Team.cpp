@@ -30,6 +30,13 @@ bool isLargerByScore(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2)
     return p1->compare(*p2) == p1->getPlayerId();
 }
 
+bool isEqualByScore(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2){
+    if(p1 == nullptr || p2 == nullptr)
+        throw invalid_argument("Comparison with nullptr");
+
+    return (p1->compare(*p2) != p1->getPlayerId() && p1->compare(*p2) != p2->getPlayerId());
+}
+
 Team::Team(int teamId, int points) :
     teamId(teamId),
     points(points),
@@ -162,6 +169,10 @@ void Team::playersIntoArr(shared_ptr<Player> **arr){
 
 void Team::printPlayersById(){
     teamPlayersByID->print2D();
+}
+
+void Team::printPlayersByScore(){
+    teamPlayersByScore->print2D();
 }
 
 

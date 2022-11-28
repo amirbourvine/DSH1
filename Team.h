@@ -55,11 +55,13 @@ public:
     void playersIntoArr(shared_ptr<Player> **arr);
 
     void printPlayersById();
+    void printPlayersByScore();
 };
 
 bool isLargerByID(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);
 bool isEqualByID(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);
 bool isLargerByScore(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);
+bool isEqualByScore(const shared_ptr<Player>& p1, const shared_ptr<Player>& p2);
 
 
 #endif //DS_WET1_TEAM_H
