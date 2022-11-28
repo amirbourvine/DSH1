@@ -42,6 +42,7 @@ public:
 
     void printPlayersByTeamId(int teamId);
     void printPlayersByTeamScore(int teamId);
+    void printValidTeams();
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);

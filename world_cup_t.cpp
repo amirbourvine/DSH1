@@ -457,7 +457,29 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
-    //int validTeamsAmount = validTeams->getSize();
+    shared_ptr<Team> playingTeam = nullptr;//findMinValid(minTeamId, maxTeamId);
+    if(playingTeam == nullptr)
+        return StatusType::FAILURE;
+
+    int winningTeamId = playingTeam->getTeamId();
+    int winningTeamWinningRate = playingTeam->getWinningRate();
+    playingTeam = playingTeam->getNextValidTeam();
+    //cout << "team id "<< winningTeamId << " wr is " << winningTeamWinningRate << endl;
+    while(winningTeamId <= maxTeamId){
+        //cout << "team id " << (*teamsPlayingArr[i])->getTeamId() << " wr is " << (*teamsPlayingArr[i])->getWinningRate() << endl;
+        if((playingTeam->getWinningRate() > winningTeamWinningRate) ||
+           (playingTeam->getWinningRate() == winningTeamWinningRate &&
+                   playingTeam->getTeamId() > winningTeamId))
+            winningTeamId = playingTeam->getTeamId();
+
+        winningTeamWinningRate += 3 + playingTeam->getWinningRate();
+        playingTeam = playingTeam->getNextValidTeam();
+    }
+
+
+    return winningTeamId;
+
+    /*
     int teamsPlayingAmount = validTeams->inRangeAmount(&isInRange,minTeamId, maxTeamId);
     if(teamsPlayingAmount == 0)
         return StatusType::FAILURE;
@@ -481,6 +503,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
 
     return winningTeamId;
+     */
 }
 
 
@@ -506,6 +529,16 @@ void world_cup_t::printPlayersByTeamScore(int teamId){
     team = *(out1.ans()->getKey().ans());
     cout << "Amount of Players: " << team->getPlayersCount() << endl;
     team->printPlayersByScore();
+}
+
+void world_cup_t::printValidTeams(){
+    shared_ptr<Team> currentValidTeam = nullptr;// findMinValid(1, 1000000);
+    int count = 1;
+    while(currentValidTeam != nullptr){
+        cout << "Valid team " << count << " id is: " << currentValidTeam->getTeamId() << endl;
+        ++count;
+        currentValidTeam = currentValidTeam->getNextValidTeam();
+    }
 }
 
 
