@@ -72,10 +72,12 @@ int main(){
     wct.add_player(32, 3, 1, 2, 4, false);
     wct.add_player(33, 3, 1, 3, 10, false);
 
+    /*
     cout << wct.get_closest_player(30, 3).ans() << endl;
     cout << wct.get_closest_player(31, 3).ans() << endl;
     cout << wct.get_closest_player(32, 3).ans() << endl;
     cout << wct.get_closest_player(33, 3).ans() << endl;
+     */
 
     //Test unites teams
     wct.add_team(4, 0);
@@ -90,8 +92,8 @@ int main(){
 
 
     if(wct.unite_teams(3, 4, 34) == StatusType::SUCCESS)
-        cout << "Success but this time a great one " << endl;
-    wct.printPlayersByTeamId(34);
+        cout << "Success" << endl;
+    //wct.printPlayersByTeamId(34);
 
      //Tests for get all players
     int output[12];

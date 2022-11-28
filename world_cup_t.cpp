@@ -469,9 +469,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     int winningTeamId = (*teamsPlayingArr[0])->getTeamId();
     int winningTeamWinningRate = (*teamsPlayingArr[0])->getWinningRate();
-    cout << "team id "<< winningTeamId << " wr is " << winningTeamWinningRate << endl;
+    //cout << "team id "<< winningTeamId << " wr is " << winningTeamWinningRate << endl;
     for(int i = 1; i < teamsPlayingAmount; ++i){
-        cout << "team id " << (*teamsPlayingArr[i])->getTeamId() << " wr is " << (*teamsPlayingArr[i])->getWinningRate() << endl;
+        //cout << "team id " << (*teamsPlayingArr[i])->getTeamId() << " wr is " << (*teamsPlayingArr[i])->getWinningRate() << endl;
         if(((*teamsPlayingArr[i])->getWinningRate() > winningTeamWinningRate) ||
                 ((*teamsPlayingArr[i])->getWinningRate() == winningTeamWinningRate &&
                         (*teamsPlayingArr[i])->getTeamId() > winningTeamId))

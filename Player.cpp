@@ -92,7 +92,8 @@ int Player::getClosestPlayerId() const{
     if(abs(playerId - worsePlayer.lock()->playerId) < abs(playerId - betterPlayer.lock()->playerId))
         return betterPlayer.lock()->playerId;
 
-    return (worsePlayer.lock()->playerId > betterPlayer.lock()->playerId) ? worsePlayer.lock()->playerId : betterPlayer.lock()->playerId;
+    return (worsePlayer.lock()->playerId > betterPlayer.lock()->playerId)
+        ? worsePlayer.lock()->playerId : betterPlayer.lock()->playerId;
 }
 
 shared_ptr<Team> Player::getTeam() const {

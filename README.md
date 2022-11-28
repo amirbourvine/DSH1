@@ -1,7 +1,5 @@
 # DS_WET1
 באגים
-בשימוש בclosestPlayer בחיפוש איבר גדול מלמעלה ומלמטה תמיד מוחזר nullptr
-getAllPlayers works and tested on clion but not on the server
 
 
 עצי AVL
