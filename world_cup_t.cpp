@@ -41,6 +41,7 @@ StatusType world_cup_t::add_team(int teamId, int points){
 }
 
 #include <iostream>
+#include <memory>
 StatusType world_cup_t::remove_team(int teamId){
     if(teamId <= 0)
         return StatusType::FAILURE;
@@ -519,6 +520,25 @@ void world_cup_t::printPlayersByTeamScore(int teamId){
     team = *(out1.ans()->getKey().ans());
     cout << "Amount of Players: " << team->getPlayersCount() << endl;
     team->printPlayersByScore();
+}
+
+shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
+    shared_ptr<Team> temp = std::make_shared<Team>(minid);
+    if(validTeams->find(temp).status()==StatusType::SUCCESS){
+        return (*validTeams->find(temp).ans()->getKey().ans());
+    }
+    validTeams->insert(temp);
+    shared_ptr<Team> cand = *(validTeams->findAbove(temp).ans()->getKey().ans());
+    if(cand == nullptr){
+        validTeams->remove(temp);
+        return cand;
+    }
+    if(cand->getTeamId()>maxid){
+        validTeams->remove(temp);
+        return nullptr;
+    }
+    validTeams->remove(temp);
+    return cand;
 }
 
 
