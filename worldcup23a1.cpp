@@ -467,6 +467,56 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
+
+output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
+    if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Team> playingTeam = findMinValid(minTeamId, maxTeamId);
+    if(playingTeam == nullptr)
+        return StatusType::FAILURE;
+
+    int size = 0;
+    shared_ptr<Team> temp = playingTeam;
+    while(temp!= nullptr && temp->getTeamId() <= maxTeamId){
+        ++size;
+        temp = temp->getNextValidTeam();
+    }
+
+    int teamIdArr[size];
+    int teamWinningRateArr[size];
+    temp = playingTeam;
+    for(int i = 0; i < size; ++i){
+        teamIdArr[i] = temp->getTeamId();
+        teamWinningRateArr[i] = temp->getWinningRate();
+        temp = temp->getNextValidTeam();
+    }
+
+    int playingTeamsAmount = size;
+    while(playingTeamsAmount > 1){
+        /*for(int a = 0; a < playingTeamsAmount; ++a)
+            cout << teamIdArr[a] << " ";
+        cout << endl;*/
+        int i = 0;
+        for(; i < playingTeamsAmount / 2; ++i){
+            if(teamWinningRateArr[2 * i + 1] >= teamWinningRateArr[2 * i])
+                teamIdArr[i] = teamIdArr[2 * i + 1];
+            else
+                teamIdArr[i] = teamIdArr[2 * i];
+
+            teamWinningRateArr[i] = teamWinningRateArr[2 * i] + teamWinningRateArr[2 * i + 1] + 3;
+        }
+        if(playingTeamsAmount % 2 == 1){
+            teamIdArr[i] = teamIdArr[2 * i];
+            teamWinningRateArr[i] = teamWinningRateArr[2 * i];
+        }
+
+        playingTeamsAmount = playingTeamsAmount % 2 + playingTeamsAmount / 2;
+    }
+
+    return teamIdArr[0];
+}
+/*
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
@@ -493,6 +543,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return winningTeamId;
 }
+ */
 
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {

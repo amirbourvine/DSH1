@@ -137,5 +137,22 @@ int main(){
     wct.play_match(1, 1);
     wct.printTeams();
 
+    //****************************knockout********************************************
+    cout << "*********************knockout**********************************" << endl;
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    for(int i = 10; i < 18; ++i){
+        wct.add_team(i, 0);
+        for(int j = i * 100; j < i * 100 + 11; ++j)
+            wct.add_player(j, i, 1, i, 0, true);
+    }
+    cout << wct.knockout_winner(10, 17).ans() << endl;
+
+    cout << endl << "Test" << counter << endl;
+    ++counter;
+    cout << wct.knockout_winner(10, 12).ans() << endl;
+    wct.remove_player(1100);
+    cout << wct.knockout_winner(10, 12).ans() << endl;
+
    return 0;
 }
