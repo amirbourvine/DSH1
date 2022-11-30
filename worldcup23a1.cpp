@@ -359,6 +359,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
     shared_ptr<Player> player = *(out2.ans()->getKey().ans());
 
     return player->getClosestPlayerId();
+    return player->getClosestPlayerId();
 }
 
 void addGamesToPlayer(shared_ptr<Player>& p){
