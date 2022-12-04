@@ -101,6 +101,10 @@ int Team::getWinningRate() const {
     return winningRate;
 }
 
+void Team::setWinningRate(int winningRate){
+   Team::winningRate = winningRate;
+}
+
 int Team::getPlayersCount() const {
     return playersCount;
 }
@@ -177,11 +181,15 @@ StatusType Team::remove_player(const shared_ptr<Player> p){
 void Team::mergeTeams(shared_ptr<Team> team1, shared_ptr<Team> team2){
     playersCount = team1->playersCount + team2->playersCount;
 
-    teamPlayersByID->unite(&*(team1->teamPlayersByID));
-    teamPlayersByID->unite(&*(team2->teamPlayersByID));
+    if(team1->getPlayersCount() > 0) {
+        teamPlayersByID->unite(&*(team1->teamPlayersByID));
+        teamPlayersByScore->unite(&*(team1->teamPlayersByScore));
+    }
 
-    teamPlayersByScore->unite(&*(team1->teamPlayersByScore));
-    teamPlayersByScore->unite(&*(team2->teamPlayersByScore));
+    if(team2->getPlayersCount() > 0){
+        teamPlayersByID->unite(&*(team2->teamPlayersByID));
+        teamPlayersByScore->unite(&*(team2->teamPlayersByScore));
+    }
 }
 
 void Team::playersIntoArr(shared_ptr<Player> **arr){
