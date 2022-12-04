@@ -154,5 +154,7 @@ int main(){
     wct.remove_player(1100);
     cout << wct.knockout_winner(10, 12).ans() << endl;
 
+
+    cout<<"GREAT"<<endl;
    return 0;
 }
