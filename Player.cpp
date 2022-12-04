@@ -118,6 +118,9 @@ int Player::compare(Player& other) const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& p){
+    if(p.team.lock()== nullptr){
+        os << "playerId: " << p.playerId << " TEAM PTR IS NULL" << std::endl;
+    }
     return os << "playerId: " << p.playerId << ", gamesPlayedWithoutTeam: " << p.gamesPlayedWithoutTeam
               << ", goals: " << p.goals << ", cards: " << p.cards << ", goalKeeper: " << p.goalKeeper
                << std::endl;
@@ -127,4 +130,8 @@ std::ostream& operator<<(std::ostream& os, const Player& p){
 
 bool operator==(const Player& p1, const Player& p2){
     return p1.playerId == p2.playerId;
+}
+
+void Player::setTeam(shared_ptr<Team> &team1) {
+    this->team = team1;
 }

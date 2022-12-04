@@ -61,6 +61,8 @@ public:
     output_t<AVLNode<T>*> insert(const T& val);
     output_t<AVLNode<T>*> remove(const T& val);
     void inorder(AVLNode<T>* root, void (*pFunction)(T& t));
+    template <class S>
+    void inorder(AVLNode<T>* root, void (*pFunction)(T& t, S& s), S& s);
     int inorderToArr(AVLNode<T>* root, T* *arr, int size, int ind);
 
     AVLNode<T>* unite(AVLNode<T>* other);
@@ -951,6 +953,21 @@ AVLNode<T> *AVLNode<T>::findMin() {
         node = node->left;
     }
     return node;
+}
+
+template<class T>
+template<class S>
+void AVLNode<T>::inorder(AVLNode<T> *root, void (*pFunction)(T &, S &), S& s) {
+    if(root == nullptr){
+        return;
+    }
+    if(root->isEmpty){
+        return;
+    }
+
+    inorder(root->left, pFunction, s);
+    pFunction(root->key, s);
+    inorder(root->right, pFunction, s);
 }
 
 #endif //DS_WET1_AVLNODE_H

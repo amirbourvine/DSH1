@@ -38,6 +38,7 @@ public:
     void setCards(int cards);
     void setBetterPlayer(shared_ptr<Player>);
     void setWorsePlayer(shared_ptr<Player>);
+    void setTeam(shared_ptr<Team>& team);
 
     int getPlayerId() const;
     int getGamesPlayedWithoutTeam() const;

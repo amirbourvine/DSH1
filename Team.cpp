@@ -68,6 +68,10 @@ void Team::inOrderPlayers(void (*pFunction)(shared_ptr<Player>& t)){
     teamPlayersByID->inorder(pFunction);
 }
 
+void Team::inOrderPlayers(void (*pFunction)(shared_ptr<Player>& p, shared_ptr<Team>& t), shared_ptr<Team>& team) {
+    teamPlayersByID->inorder(pFunction, team);
+}
+
 int Team::getTeamId() const {
     return teamId;
 }
@@ -208,5 +212,9 @@ void Team::printPlayersByScore(){
     teamPlayersByScore->inorder(&printPlayer);
     cout << endl;
 }
+
+
+
+
 
 

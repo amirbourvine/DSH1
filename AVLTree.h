@@ -32,6 +32,8 @@ public:
     StatusType insert(const T& val);
     StatusType remove(const T& val);
     void inorder(void (*pFunction)(T& t));
+    template<class S>
+    void inorder(void (*pFunction)(T& t, S& s), S& s);
     void inorderToArr(T* *arr, int size);
     void inorderToArrInRange(T* *arr, int size, bool (*pFunction)(const T& t, int min, int max), int min, int max);
     int inRangeAmount(bool (*pFunction)(const T& t, int min, int max), int min, int max);
@@ -172,6 +174,12 @@ output_t<AVLNode<T> *> AVLTree<T>::findAbove(const T &val) {
 template<class T>
 output_t<AVLNode<T> *> AVLTree<T>::findUnder(const T &val) {
     return this->root->findUnder(this->root, val);
+}
+
+template<class T>
+template<class S>
+void AVLTree<T>::inorder(void (*pFunction)(T &, S &), S& s) {
+    this->root->template inorder(this->root,pFunction, s);
 }
 
 

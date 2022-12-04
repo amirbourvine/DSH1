@@ -35,6 +35,8 @@ public:
 
     output_t<AVLNode<shared_ptr<Player>>*> findPlayerByID(int playerId) const;
     void inOrderPlayers(void (*pFunction)(shared_ptr<Player>& t));
+    void inOrderPlayers(void (*pFunction)(shared_ptr<Player>& p, shared_ptr<Team>& t), shared_ptr<Team>& team);
+
 
     int getTeamId() const;
     int getPoints() const;

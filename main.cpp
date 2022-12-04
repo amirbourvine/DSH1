@@ -165,7 +165,10 @@ int main(){
     cout << endl << "Test" << counter << endl;
     ++counter;
     wct.printTeams();
+
     wct.unite_teams(1, 2, 1);
+   
+    cout<<"*******************************UNITED**********************************"<<endl;
     wct.printTeams();
     wct.printValidTeams();
     wct.printPlayersByTeamId(1);
@@ -173,10 +176,10 @@ int main(){
 
     cout << endl << "Test" << counter << endl;
     ++counter;
-    wct.add_team(2, 0);
-    wct.add_player(playersCount, 2, 0, 0, 0, false);
+    wct.add_team(4, 0);
+    wct.add_player(playersCount, 4, 0, 0, 0, false);
     ++playersCount;
-    wct.unite_teams(1, 2, 1);
+    wct.unite_teams(1, 4, 1);
     wct.printTeams();
     wct.printPlayersByTeamId(1);
 

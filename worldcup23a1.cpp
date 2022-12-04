@@ -365,6 +365,9 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
 void addGamesToPlayer(shared_ptr<Player>& p){
     p->setGamesPlayedWithoutTeam(p->getGamesPlayedWithoutTeam() + p->getTeam()->getGamesPlayedAsTeam());
 }
+void changePlayersTeamPtr(shared_ptr<Player>& p, shared_ptr<Team>& team) {
+    p->setTeam(team);
+}
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <=0 || teamId1 == teamId2)
         return StatusType::FAILURE;
@@ -406,17 +409,25 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     if(teams->remove(team2) != StatusType::SUCCESS)
         return teams->remove(team2);
 
+
+
     newTeam->setGoalKeepersAmount(team1->getGoalKeepersAmount() + team2->getGoalKeepersAmount());
 
     newTeam->setWinningRate(team1->getWinningRate() + team2->getWinningRate());
 
     newTeam->setGamesPlayedAsTeam(0);
 
+
     if(team1->getPlayersCount() > 0)
         team1->inOrderPlayers(&addGamesToPlayer);
-
     if(team2->getPlayersCount() > 0)
         team2->inOrderPlayers(&addGamesToPlayer);
+
+    if(team1->getPlayersCount() > 0)
+        team1->inOrderPlayers(&changePlayersTeamPtr, newTeam);
+    if(team2->getPlayersCount() > 0)
+        team2->inOrderPlayers(&changePlayersTeamPtr, newTeam);
+
 
     if(team1->getPlayersCount() > 0 && team2->getPlayersCount() > 0)
         newTeam->setTopScorer((team1->getTopScorer()->compare(*team2->getTopScorer())
@@ -440,7 +451,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 }
 
 StatusType world_cup_t::get_all_players(int teamId, int* const output){
-    if(teamId == 0 || output == NULL){
+    if(teamId == 0 || output == nullptr){
         return StatusType::INVALID_INPUT;
     }
 
