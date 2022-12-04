@@ -408,12 +408,23 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 
     newTeam->setGoalKeepersAmount(team1->getGoalKeepersAmount() + team2->getGoalKeepersAmount());
 
-    newTeam->setGamesPlayedAsTeam(0);
-    team1->inOrderPlayers(&addGamesToPlayer);
-    team2->inOrderPlayers(&addGamesToPlayer);
+    newTeam->setWinningRate(team1->getWinningRate() + team2->getWinningRate());
 
-    newTeam->setTopScorer((team1->getTopScorer()->compare(*team2->getTopScorer())
-                           == team1->getTopScorer()->getPlayerId()) ? team1->getTopScorer() : team2->getTopScorer());
+    newTeam->setGamesPlayedAsTeam(0);
+
+    if(team1->getPlayersCount() > 0)
+        team1->inOrderPlayers(&addGamesToPlayer);
+
+    if(team2->getPlayersCount() > 0)
+        team2->inOrderPlayers(&addGamesToPlayer);
+
+    if(team1->getPlayersCount() > 0 && team2->getPlayersCount() > 0)
+        newTeam->setTopScorer((team1->getTopScorer()->compare(*team2->getTopScorer())
+            == team1->getTopScorer()->getPlayerId()) ? team1->getTopScorer() : team2->getTopScorer());
+    else if(team1->getPlayersCount() == 0 && team2->getPlayersCount() > 0)
+        newTeam->setTopScorer(team2->getTopScorer());
+    else if(team1->getPlayersCount() > 0 && team2->getPlayersCount() == 0)
+        newTeam->setTopScorer(team1->getTopScorer());
 
     newTeam->mergeTeams(team1, team2);
 
@@ -468,7 +479,6 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
-
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;

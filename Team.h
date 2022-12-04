@@ -44,6 +44,7 @@ public:
     int getGamesPlayedAsTeam() const;
     void setGamesPlayedAsTeam(int gamesPlayedAsTeam);
     int getWinningRate() const;
+    void setWinningRate(int winningRate);
     int getPlayersCount() const;
     void setPlayersCount(int playersCount);
     const shared_ptr<Player> &getTopScorer() const;
