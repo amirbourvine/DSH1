@@ -513,10 +513,11 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
+    cout<<"HERE1"<<endl;
     shared_ptr<Team> playingTeam = findMinValid(minTeamId, maxTeamId);
     if(playingTeam == nullptr)
         return StatusType::FAILURE;
-
+    cout<<"HERE2"<<endl;
     int size = 0;
     shared_ptr<Team> temp = playingTeam;
     while(temp!= nullptr && temp->getTeamId() <= maxTeamId){
@@ -641,9 +642,6 @@ void world_cup_t::printTeams(){
 
 void world_cup_t::printValidTeams(){
     shared_ptr<Team> currentValidTeam = findMinValid(1, 1000000);
-    if(currentValidTeam == nullptr){
-        cout<<"GOOD"<<endl;
-    }
     int count = 1;
     while(currentValidTeam != nullptr){
         cout << "Valid team " << count << " id is: " << currentValidTeam->getTeamId() << endl;
