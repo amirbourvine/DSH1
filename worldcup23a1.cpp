@@ -74,7 +74,6 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
 
         ++playersCount;
         bool validBeforePlayer = team->isValid();
-        cout<<"HELLO2"<<endl;
         if(team->add_player(p) != StatusType::SUCCESS)
             return team->add_player(p);
         cout<<"HELLO3"<<endl;
@@ -84,13 +83,11 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
             }
             cout<<"HELLO4"<<endl;
             AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(team).ans();
-            cout<<"HELLO5"<<endl;
             if(ptr != nullptr) {
                 team->setNextValidTeam(*(ptr->getKey().ans()));
                 if(team->getNextValidTeam() != nullptr)
                     team->getNextValidTeam()->setPrevValidTeam(team);
             }
-            cout<<"HELLO6"<<endl;
             ptr = validTeams->findUnder(team).ans();
             if(ptr != nullptr){
                 team->setPrevValidTeam(*(ptr->getKey().ans()));
