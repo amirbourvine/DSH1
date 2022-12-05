@@ -63,10 +63,6 @@ StatusType world_cup_t::remove_team(int teamId){
 
 StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper, const shared_ptr<Team>& team){
-    shared_ptr<Player> temp_p(new Player(playerId));
-    if(players->find(temp_p).status() != StatusType::FAILURE)
-        return StatusType::FAILURE;
-
     try {
         shared_ptr<Player> p(new Player(playerId, gamesPlayed - team->getGamesPlayedAsTeam(), goals, cards, goalKeeper, team));
 
@@ -135,6 +131,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
        (gamesPlayed == 0 && (goals > 0 || cards > 0)))
         return StatusType::INVALID_INPUT;
 
+    shared_ptr<Player> temp_p(new Player(playerId));
+    if(players->find(temp_p).status() != StatusType::FAILURE)
+        return StatusType::FAILURE;
 
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(team);
