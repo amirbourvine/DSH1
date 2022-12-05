@@ -355,11 +355,10 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
     AVLNode<T>* p;
     AVLNode<T>* q;
     cout<<"IT2"<<endl;
-    while(node!=this){
+    while(node!= nullptr&&node!=this){
         p = node->up;
         cout<<"IT3"<<endl;
-        if(p== nullptr)
-            break;
+        if(p == nullptr){break;}
         if(p->h >= node->h+1){
             return this;
         }
