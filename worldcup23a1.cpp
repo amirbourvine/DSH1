@@ -512,6 +512,7 @@ bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
+    cout<<"HOLA1"<<endl;
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
@@ -633,7 +634,9 @@ void world_cup_t::printTeams(){
 }
 
 void world_cup_t::printValidTeams(){
+    cout<<"HOLA1"<<endl;
     shared_ptr<Team> currentValidTeam = findMinValid(1, 1000000);
+    cout<<"HOLA2"<<endl;
     int count = 1;
     while(currentValidTeam != nullptr){
         cout << "Valid team " << count << " id is: " << currentValidTeam->getTeamId() << endl;
