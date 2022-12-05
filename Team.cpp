@@ -140,9 +140,10 @@ void Team::setPrevValidTeam(shared_ptr<Team> prevValidTeam){
 }
 
 StatusType Team::add_player(const shared_ptr<Player> p) {
+    cout<<"HOLA1"<<endl;
     if(teamPlayersByID->insert(shared_ptr<Player>(p)) == StatusType::FAILURE)
         return StatusType::FAILURE;
-
+    cout<<"HOLA2"<<endl;
     if(teamPlayersByScore->insert(shared_ptr<Player>(p)) == StatusType::FAILURE)
         return StatusType::FAILURE;
 
@@ -150,7 +151,7 @@ StatusType Team::add_player(const shared_ptr<Player> p) {
     GoalKeepersAmount += p->isGoalKeeper();
 
     ++playersCount;
-
+    cout<<"HOLA3"<<endl;
     if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
         top_scorer = shared_ptr<Player>(p);
 
