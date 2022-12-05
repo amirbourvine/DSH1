@@ -641,6 +641,9 @@ void world_cup_t::printTeams(){
 
 void world_cup_t::printValidTeams(){
     shared_ptr<Team> currentValidTeam = findMinValid(1, 1000000);
+    if(currentValidTeam == nullptr){
+        cout<<"GOOD"<<endl;
+    }
     int count = 1;
     while(currentValidTeam != nullptr){
         cout << "Valid team " << count << " id is: " << currentValidTeam->getTeamId() << endl;
