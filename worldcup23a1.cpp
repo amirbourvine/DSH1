@@ -509,15 +509,17 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
-output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
-    if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
+output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId) {
+    if (minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
 
     this->printValidTeams();
     shared_ptr<Team> playingTeam = findMinValid(minTeamId, maxTeamId);
-    if(playingTeam == nullptr)
+    if (playingTeam == nullptr){
+        cout<<"GREAT"<<endl;
         return StatusType::FAILURE;
+}
 
     int size = 0;
     shared_ptr<Team> temp = playingTeam;
