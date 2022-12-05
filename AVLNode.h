@@ -345,30 +345,22 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
     }
 
     output_t<AVLNode<T>*> temp = insertaux(val, this);
-    cout<<"IT0"<<endl;
     if(temp.status()==StatusType::FAILURE){
         return StatusType::FAILURE;
     }
-    cout<<"IT1"<<endl;
     AVLNode<T>* node = temp.ans();
     node->h = 0;
     AVLNode<T>* p;
     AVLNode<T>* q;
-    cout<<"IT2"<<endl;
     while(node!= nullptr && node!=this){
-        cout<<"HOPS2"<<endl;
         p = node->up;
-        cout<<"IT3"<<endl;
         if(p == nullptr){break;}
         if(p->h >= node->h+1){
             return this;
         }
-        cout<<"IT4"<<endl;
         p->h = node->h+1;
         if(abs(p->getBF().ans())==2){
-            cout<<"IT4.5"<<endl;
             if(p->getBF().ans()==2) {
-                cout<<"IT5"<<endl;
                 if (p->left->getBF().ans() == -1) {
                     q = LRRotation(p).ans();
                     if(q->h>this->h)
@@ -376,7 +368,6 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
                     else
                         return this;
                 } else {
-                    cout<<"IT6"<<endl;
                     q = LLRotation(p).ans();
                     if(q->h>this->h)
                         return q;
@@ -385,7 +376,6 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
                 }
             }
             if(p->getBF().ans()==-2){
-                cout<<"IT7"<<endl;
                 if(p->right->getBF().ans()==1){
                     q = RLRotation(p).ans();
 
@@ -395,7 +385,6 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
                         return this;
                 }
                 else{
-                    cout<<"IT8"<<endl;
                     q = RRRotation(p).ans();
                     if(q->h>this->h)
                         return q;
@@ -405,12 +394,9 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
             }
         }
         else{
-            cout<<"HOPS"<<endl;
             node = p;
         }
-        cout<<"HOPS1"<<endl;
     }
-    cout<<"GREAT"<<endl;
     return this;
 }
 
@@ -449,23 +435,18 @@ output_t<AVLNode<T>*> AVLNode<T>::insertaux(const T& val, AVLNode<T> *root) {
 
 template<class T>
 output_t<int> AVLNode<T>::getBF() {
-    cout<<"HHH1"<<endl;
     if(this == nullptr){
         return StatusType::INVALID_INPUT;
     }
-    cout<<"HHH2"<<endl;
     if(this->left == nullptr && this->right == nullptr){
         return 0;
     }
-    cout<<"HHH3"<<endl;
     if(this->left == nullptr && this->right != nullptr){
         return (-1-this->right->h);
     }
-    cout<<"HHH4"<<endl;
     if(this->left != nullptr && this->right == nullptr){
         return (this->left->h+1);
     }
-    cout<<"HHH5"<<endl;
     if(this->left != nullptr && this->right != nullptr){
         return (this->left->h-this->right->h);
     }
