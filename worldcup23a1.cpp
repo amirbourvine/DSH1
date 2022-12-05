@@ -44,7 +44,7 @@ StatusType world_cup_t::add_team(int teamId, int points){
 #include <memory>
 StatusType world_cup_t::remove_team(int teamId){
     if(teamId <= 0)
-        return StatusType::FAILURE;
+        return StatusType::INVALID_INPUT;
 
     shared_ptr<Team> temp(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(temp);
@@ -63,10 +63,6 @@ StatusType world_cup_t::remove_team(int teamId){
 
 StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper, const shared_ptr<Team>& team){
-    if(playerId <= 0 || teamId <= 0 || gamesPlayed < 0 || goals < 0 || cards < 0 ||
-       (gamesPlayed == 0 && (goals > 0 || cards > 0)))
-        return StatusType::INVALID_INPUT;
-
     shared_ptr<Player> temp_p(new Player(playerId));
     if(players->find(temp_p).status() != StatusType::FAILURE)
         return StatusType::FAILURE;
@@ -135,6 +131,11 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
 
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                     int goals, int cards, bool goalKeeper){
+    if(playerId <= 0 || teamId <= 0 || gamesPlayed < 0 || goals < 0 || cards < 0 ||
+       (gamesPlayed == 0 && (goals > 0 || cards > 0)))
+        return StatusType::INVALID_INPUT;
+
+
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(team);
     if(out.status() != StatusType::SUCCESS)
@@ -333,9 +334,6 @@ output_t<int> world_cup_t::get_all_players_count(int teamId){
 
         team = *(out1.ans()->getKey().ans());
 
-        if(team->getPlayersCount() == 0)
-            return StatusType::FAILURE;
-
         return team->getPlayersCount();
     }
 
@@ -377,7 +375,7 @@ void changePlayersTeamPtr(shared_ptr<Player>& p, shared_ptr<Team>& team) {
 }
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <=0 || teamId1 == teamId2)
-        return StatusType::FAILURE;
+        return StatusType::INVALID_INPUT;
 
     shared_ptr<Team> team1(new Team(teamId1));
     output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team1);
