@@ -393,6 +393,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     if(teams->find(newTeam).status() != StatusType::FAILURE && newTeamId!=teamId1 && newTeamId!=teamId2)
         return StatusType::FAILURE;
 
+
     if(team1->isValid()){
         if(validTeams->remove(team1) != StatusType::SUCCESS)
             return validTeams->remove(team1);
@@ -402,6 +403,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
         if(validTeams->remove(team2) != StatusType::SUCCESS)
             return validTeams->remove(team2);
     }
+
 
     if(teams->remove(team1) != StatusType::SUCCESS)
         return teams->remove(team1);
@@ -428,7 +430,6 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
     if(team2->getPlayersCount() > 0)
         team2->inOrderPlayers(&changePlayersTeamPtr, newTeam);
 
-
     if(team1->getPlayersCount() > 0 && team2->getPlayersCount() > 0)
         newTeam->setTopScorer((team1->getTopScorer()->compare(*team2->getTopScorer())
             == team1->getTopScorer()->getPlayerId()) ? team1->getTopScorer() : team2->getTopScorer());
@@ -439,11 +440,26 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 
     newTeam->mergeTeams(team1, team2);
 
-    if(newTeam->isValid()) {
-        if(validTeams->insert(newTeam) != StatusType::SUCCESS)
-            return validTeams->insert(newTeam);
-    }
 
+    //ADD TREATMENT TO NEXTVALID AND PREVVALID
+    if(newTeam->isValid()) {
+        if(validTeams->insert(newTeam) != StatusType::SUCCESS) {
+            return validTeams->insert(newTeam);
+        }
+        AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(newTeam).ans();
+        if(ptr != nullptr) {
+            newTeam->setNextValidTeam(*(ptr->getKey().ans()));
+            if(newTeam->getNextValidTeam() != nullptr)
+                newTeam->getNextValidTeam()->setPrevValidTeam(newTeam);
+        }
+
+        ptr = validTeams->findUnder(newTeam).ans();
+        if(ptr != nullptr){
+            newTeam->setPrevValidTeam(*(ptr->getKey().ans()));
+            if(newTeam->getPrevValidTeam() != nullptr)
+                newTeam->getPrevValidTeam()->setNextValidTeam(newTeam);
+        }
+    }
     if(teams->insert(newTeam) != StatusType::SUCCESS)
         return teams->insert(newTeam);
 
@@ -516,9 +532,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     int playingTeamsAmount = size;
     while(playingTeamsAmount > 1){
-        /*for(int a = 0; a < playingTeamsAmount; ++a)
-            cout << teamIdArr[a] << " ";
-        cout << endl;*/
         int i = 0;
         for(; i < playingTeamsAmount / 2; ++i){
             if(teamWinningRateArr[2 * i + 1] >= teamWinningRateArr[2 * i])
@@ -538,35 +551,6 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
     return teamIdArr[0];
 }
-/*
-output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
-    if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
-        return StatusType::INVALID_INPUT;
-
-    shared_ptr<Team> playingTeam = findMinValid(minTeamId, maxTeamId);
-    if(playingTeam == nullptr)
-        return StatusType::FAILURE;
-
-    int winningTeamId = playingTeam->getTeamId();
-    int winningTeamWinningRate = playingTeam->getWinningRate();
-    playingTeam = playingTeam->getNextValidTeam();
-    //cout << "team id "<< winningTeamId << " wr is " << winningTeamWinningRate << endl;
-    while(playingTeam!= nullptr && winningTeamId <= maxTeamId){
-        //cout << "team id " << (*teamsPlayingArr[i])->getTeamId() << " wr is " << (*teamsPlayingArr[i])->getWinningRate() << endl;
-        if((playingTeam->getWinningRate() > winningTeamWinningRate) ||
-           (playingTeam->getWinningRate() == winningTeamWinningRate &&
-                   playingTeam->getTeamId() > winningTeamId))
-            winningTeamId = playingTeam->getTeamId();
-
-        winningTeamWinningRate += 3 + playingTeam->getWinningRate();
-        playingTeam = playingTeam->getNextValidTeam();
-    }
-
-
-    return winningTeamId;
-}
- */
-
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     shared_ptr<Team> temp = std::make_shared<Team>(minid);

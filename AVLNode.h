@@ -345,6 +345,7 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
     }
 
     output_t<AVLNode<T>*> temp = insertaux(val, this);
+
     if(temp.status()==StatusType::FAILURE){
         return StatusType::FAILURE;
     }
