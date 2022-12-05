@@ -404,6 +404,7 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
             }
         }
         else{
+            cout<<"HOPS"<<endl;
             node = p;
         }
     }
