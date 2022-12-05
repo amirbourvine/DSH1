@@ -357,20 +357,23 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
     cout<<"IT2"<<endl;
     while(node!=this){
         p = node->up;
-
+        cout<<"IT3"<<endl;
         if(p->h >= node->h+1){
             return this;
         }
+        cout<<"IT4"<<endl;
         p->h = node->h+1;
         if(abs(p->getBF().ans())==2){
             if(p->getBF().ans()==2) {
                 if (p->left->getBF().ans() == -1) {
+                    cout<<"IT5"<<endl;
                     q = LRRotation(p).ans();
                     if(q->h>this->h)
                         return q;
                     else
                         return this;
                 } else {
+                    cout<<"IT6"<<endl;
                     q = LLRotation(p).ans();
                     if(q->h>this->h)
                         return q;
@@ -380,6 +383,7 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
             }
             if(p->getBF().ans()==-2){
                 if(p->right->getBF().ans()==1){
+                    cout<<"IT7"<<endl;
                     q = RLRotation(p).ans();
 
                     if(q->h>this->h)
@@ -388,6 +392,7 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
                         return this;
                 }
                 else{
+                    cout<<"IT8"<<endl;
                     q = RRRotation(p).ans();
                     if(q->h>this->h)
                         return q;
@@ -400,7 +405,6 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
             node = p;
         }
     }
-    cout<<"IT3"<<endl;
     return this;
 }
 
