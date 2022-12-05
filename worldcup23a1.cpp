@@ -130,19 +130,19 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     if(playerId <= 0 || teamId <= 0 || gamesPlayed < 0 || goals < 0 || cards < 0 ||
        (gamesPlayed == 0 && (goals > 0 || cards > 0)))
         return StatusType::INVALID_INPUT;
-    cout<<"HELLO2"<<endl;
+
     shared_ptr<Player> temp_p(new Player(playerId));
     if(players->find(temp_p).status() != StatusType::FAILURE)
         return StatusType::FAILURE;
 
-    cout<<"HELLO3"<<endl;
+
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(team);
     if(out.status() != StatusType::SUCCESS)
         return out.status();
-    cout<<"HELLO4"<<endl;
-    team = *(out.ans()->getKey().ans());
 
+    team = *(out.ans()->getKey().ans());
+    cout<<"HELLO"<<endl;
     return add_playeraux(playerId, teamId, gamesPlayed, goals, cards, goalKeeper, team);
 }
 
