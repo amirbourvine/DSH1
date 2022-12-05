@@ -490,7 +490,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
         if(team->getPlayersCount() == 0)
             return StatusType::FAILURE;
 
-        shared_ptr<Player>* arr[team->getPlayersCount()];
+        shared_ptr<Player>* *arr = new shared_ptr<Player>*[team->getPlayersCount()];
         team->playersIntoArr(arr);
         for(int i = 0; i < team->getPlayersCount(); ++i)
             output[i] = (*arr[i])->getPlayerId();
@@ -501,7 +501,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
     if(playersCount == 0)
         return StatusType::FAILURE;
 
-    shared_ptr<Player>* arr[playersCount];
+    shared_ptr<Player>* *arr = new  shared_ptr<Player>*[playersCount];
     playersByScore->inorderToArr(arr, playersCount);
 
     for(int i = 0; i < playersCount; ++i)
@@ -528,8 +528,8 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
         temp = temp->getNextValidTeam();
     }
 
-    int teamIdArr[size];
-    int teamWinningRateArr[size];
+    int* teamIdArr =new int[size];
+    int* teamWinningRateArr = new int[size];
     temp = playingTeam;
     for(int i = 0; i < size; ++i){
         teamIdArr[i] = temp->getTeamId();
