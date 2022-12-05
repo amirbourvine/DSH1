@@ -513,12 +513,11 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId) {
     if (minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
-
     this->printValidTeams();
     shared_ptr<Team> playingTeam = this->findMinValid(minTeamId, maxTeamId);
     if (playingTeam == nullptr){
         return StatusType::FAILURE;
-}
+    }
 
     int size = 0;
     shared_ptr<Team> temp = playingTeam;
