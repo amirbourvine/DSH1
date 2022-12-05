@@ -76,12 +76,10 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
         bool validBeforePlayer = team->isValid();
         if(team->add_player(p) != StatusType::SUCCESS)
             return team->add_player(p);
-        cout<<"HELLO3"<<endl;
         if(team->isValid() && !validBeforePlayer){
             if(validTeams->insert(team) != StatusType::SUCCESS) {
                 return validTeams->insert(shared_ptr<Team>(team));
             }
-            cout<<"HELLO4"<<endl;
             AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(team).ans();
             if(ptr != nullptr) {
                 team->setNextValidTeam(*(ptr->getKey().ans()));
@@ -512,7 +510,6 @@ bool isInRange(const shared_ptr<Team>& team, int minTeamId, int maxTeamId){
     return team->getTeamId() >= minTeamId && team->getTeamId() <= maxTeamId;
 }
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
-    cout<<"HOLA1"<<endl;
     if(minTeamId < 0 || maxTeamId < 0 || maxTeamId < minTeamId)
         return StatusType::INVALID_INPUT;
 
@@ -560,18 +557,18 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     shared_ptr<Team> temp = std::make_shared<Team>(minid);
-    cout<<"HEY1"<<endl;
+
     if(validTeams->find(temp).status()==StatusType::SUCCESS){
         return (*validTeams->find(temp).ans()->getKey().ans());
     }
-    cout<<"HEY2"<<endl;
+
     validTeams->insert(temp);
-    cout<<"HEY3"<<endl;
+
     if(validTeams->findAbove(temp).ans() == nullptr){
         return nullptr;
     }
     shared_ptr<Team> cand = *(validTeams->findAbove(temp).ans()->getKey().ans());
-    cout<<"HEY4"<<endl;
+
     if(cand == nullptr){
         validTeams->remove(temp);
         return cand;
@@ -581,7 +578,7 @@ shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
         validTeams->remove(temp);
         return nullptr;
     }
-    cout<<"HEY5"<<endl;
+
     validTeams->remove(temp);
     return cand;
 }
