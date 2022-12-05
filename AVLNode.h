@@ -365,6 +365,7 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
         cout<<"IT4"<<endl;
         p->h = node->h+1;
         if(abs(p->getBF().ans())==2){
+            cout<<"IT4.5"<<endl;
             if(p->getBF().ans()==2) {
                 cout<<"IT5"<<endl;
                 if (p->left->getBF().ans() == -1) {
