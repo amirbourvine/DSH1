@@ -366,8 +366,8 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
         p->h = node->h+1;
         if(abs(p->getBF().ans())==2){
             if(p->getBF().ans()==2) {
+                cout<<"IT5"<<endl;
                 if (p->left->getBF().ans() == -1) {
-                    cout<<"IT5"<<endl;
                     q = LRRotation(p).ans();
                     if(q->h>this->h)
                         return q;
@@ -383,8 +383,8 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
                 }
             }
             if(p->getBF().ans()==-2){
+                cout<<"IT7"<<endl;
                 if(p->right->getBF().ans()==1){
-                    cout<<"IT7"<<endl;
                     q = RLRotation(p).ans();
 
                     if(q->h>this->h)
