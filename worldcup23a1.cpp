@@ -347,6 +347,10 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
     if(playerId <= 0 || teamId <= 0)
         return StatusType::INVALID_INPUT;
 
+    if(this->playersCount == 1){
+        return StatusType::FAILURE;
+    }
+
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team);
     if(out1.status() != StatusType::SUCCESS) {
@@ -363,7 +367,6 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId){
 
     shared_ptr<Player> player = *(out2.ans()->getKey().ans());
 
-    return player->getClosestPlayerId();
     return player->getClosestPlayerId();
 }
 
