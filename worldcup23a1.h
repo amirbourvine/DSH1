@@ -48,6 +48,9 @@ public:
     void printPlayersByTeamScore(int teamId);
     void printTeams();
     void printValidTeams();
+
+    StatusType add_playeraux(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper,
+                const shared_ptr<Team> &team);
 };
 
 bool isLargerByID(const shared_ptr<Team>&, const shared_ptr<Team>&);
