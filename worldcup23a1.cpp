@@ -561,6 +561,9 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId) {
 }
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
+    if(validTeams== nullptr){
+        return nullptr;
+    }
     if(validTeams->getSize()==0){
         return nullptr;
     }
