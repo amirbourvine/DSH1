@@ -568,11 +568,12 @@ shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     validTeams->insert(temp);
     cout<<"HEY3"<<endl;
     shared_ptr<Team> cand = *(validTeams->findAbove(temp).ans()->getKey().ans());
+    cout<<"HEY4"<<endl;
     if(cand == nullptr){
         validTeams->remove(temp);
         return cand;
     }
-    cout<<"HEY4"<<endl;
+
     if(cand->getTeamId()>maxid){
         validTeams->remove(temp);
         return nullptr;
