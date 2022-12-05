@@ -142,7 +142,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         return out.status();
 
     team = *(out.ans()->getKey().ans());
-    cout<<"HELLO"<<endl;
+    cout<<(*team)<<endl;
     return add_playeraux(playerId, teamId, gamesPlayed, goals, cards, goalKeeper, team);
 }
 
