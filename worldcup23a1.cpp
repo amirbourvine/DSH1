@@ -514,7 +514,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId) {
         return StatusType::INVALID_INPUT;
 
     this->printValidTeams();
-    shared_ptr<Team> playingTeam = this->findMinValid(minTeamId, maxTeamId);
+    shared_ptr<Team> playingTeam = findMinValid(minTeamId, maxTeamId);
     if (playingTeam == nullptr){
         return StatusType::FAILURE;
     }
@@ -642,7 +642,7 @@ void world_cup_t::printTeams(){
 }
 
 void world_cup_t::printValidTeams(){
-    shared_ptr<Team> currentValidTeam = findMinValid(1, 999999999);
+    shared_ptr<Team> currentValidTeam = findMinValid(0, 999999999);
     int count = 1;
     if(currentValidTeam == nullptr){
         cout<<"IS NULLPTR"<<endl;
