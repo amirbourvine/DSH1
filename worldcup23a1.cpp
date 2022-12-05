@@ -64,7 +64,6 @@ StatusType world_cup_t::remove_team(int teamId){
 StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper, const shared_ptr<Team>& team){
     try {
-        cout<<"HELLO1"<<endl;
         shared_ptr<Player> p(new Player(playerId, gamesPlayed - team->getGamesPlayedAsTeam(), goals, cards, goalKeeper, team));
 
         if (players->insert(shared_ptr<Player>(p)) != StatusType::SUCCESS)
@@ -74,24 +73,25 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
             return playersByScore->insert(shared_ptr<Player>(p));
 
         ++playersCount;
-        cout<<"HELLO2"<<endl;
+        cout<<"HELLO1"<<endl;
         bool validBeforePlayer = team->isValid();
-
+        cout<<"HELLO2"<<endl;
         if(team->add_player(p) != StatusType::SUCCESS)
             return team->add_player(p);
-
+        cout<<"HELLO3"<<endl;
         if(team->isValid() && !validBeforePlayer){
             if(validTeams->insert(team) != StatusType::SUCCESS) {
                 return validTeams->insert(shared_ptr<Team>(team));
             }
-
+            cout<<"HELLO4"<<endl;
             AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(team).ans();
+            cout<<"HELLO5"<<endl;
             if(ptr != nullptr) {
                 team->setNextValidTeam(*(ptr->getKey().ans()));
                 if(team->getNextValidTeam() != nullptr)
                     team->getNextValidTeam()->setPrevValidTeam(team);
             }
-            cout<<"HELLO3"<<endl;
+            cout<<"HELLO6"<<endl;
             ptr = validTeams->findUnder(team).ans();
             if(ptr != nullptr){
                 team->setPrevValidTeam(*(ptr->getKey().ans()));
@@ -100,7 +100,7 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
             }
 
         }
-        cout<<"HELLO4"<<endl;
+
         if(top_scorer == nullptr || top_scorer->compare(*p) == p->getPlayerId())
             top_scorer = shared_ptr<Player>(p);
 
@@ -110,7 +110,7 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
             if(p->getBetterPlayer() != nullptr)
                 p->getBetterPlayer()->setWorsePlayer(p);
         }
-        cout<<"HELLO5"<<endl;
+
         ptemp = playersByScore->findUnder(p).ans();
         if(ptemp != nullptr){
             p->setWorsePlayer(*(ptemp->getKey().ans()));
@@ -121,7 +121,7 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
     catch(bad_alloc){
         return StatusType::ALLOCATION_ERROR;
     }
-    cout<<"HELLO6"<<endl;
+
     return StatusType::SUCCESS;
 }
 
