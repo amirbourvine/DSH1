@@ -560,19 +560,24 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId){
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     shared_ptr<Team> temp = std::make_shared<Team>(minid);
+    cout<<"HEY1"<<endl;
     if(validTeams->find(temp).status()==StatusType::SUCCESS){
         return (*validTeams->find(temp).ans()->getKey().ans());
     }
+    cout<<"HEY2"<<endl;
     validTeams->insert(temp);
+    cout<<"HEY3"<<endl;
     shared_ptr<Team> cand = *(validTeams->findAbove(temp).ans()->getKey().ans());
     if(cand == nullptr){
         validTeams->remove(temp);
         return cand;
     }
+    cout<<"HEY4"<<endl;
     if(cand->getTeamId()>maxid){
         validTeams->remove(temp);
         return nullptr;
     }
+    cout<<"HEY5"<<endl;
     validTeams->remove(temp);
     return cand;
 }
