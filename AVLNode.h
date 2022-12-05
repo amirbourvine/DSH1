@@ -445,18 +445,23 @@ output_t<AVLNode<T>*> AVLNode<T>::insertaux(const T& val, AVLNode<T> *root) {
 
 template<class T>
 output_t<int> AVLNode<T>::getBF() {
+    cout<<"HHH1"<<endl;
     if(this == nullptr){
         return StatusType::INVALID_INPUT;
     }
+    cout<<"HHH2"<<endl;
     if(this->left == nullptr && this->right == nullptr){
         return 0;
     }
+    cout<<"HHH3"<<endl;
     if(this->left == nullptr && this->right != nullptr){
         return (-1-this->right->h);
     }
+    cout<<"HHH4"<<endl;
     if(this->left != nullptr && this->right == nullptr){
         return (this->left->h+1);
     }
+    cout<<"HHH5"<<endl;
     if(this->left != nullptr && this->right != nullptr){
         return (this->left->h-this->right->h);
     }
