@@ -73,7 +73,6 @@ StatusType world_cup_t::add_playeraux(int playerId, int teamId, int gamesPlayed,
             return playersByScore->insert(shared_ptr<Player>(p));
 
         ++playersCount;
-        cout<<"HELLO1"<<endl;
         bool validBeforePlayer = team->isValid();
         cout<<"HELLO2"<<endl;
         if(team->add_player(p) != StatusType::SUCCESS)
@@ -143,7 +142,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         return out.status();
 
     team = *(out.ans()->getKey().ans());
-
+    if(team== nullptr){
+        cout<<"**************************************************88"<<endl;
+    }
     return add_playeraux(playerId, teamId, gamesPlayed, goals, cards, goalKeeper, team);
 }
 
