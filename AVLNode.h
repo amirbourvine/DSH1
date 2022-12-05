@@ -343,9 +343,9 @@ output_t<AVLNode<T>*> AVLNode<T>::insert(const T& val) {
         this->isEmpty = false;
         return this;
     }
-
+    cout<<"IT0"<<endl;
     output_t<AVLNode<T>*> temp = insertaux(val, this);
-
+    cout<<"IT1"<<endl;
     if(temp.status()==StatusType::FAILURE){
         return StatusType::FAILURE;
     }
