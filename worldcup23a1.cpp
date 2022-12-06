@@ -214,16 +214,11 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int s
     if(remove_player(player->getPlayerId()) != StatusType::SUCCESS)
         return remove_player(player->getPlayerId());
 
-    if(add_playeraux(player->getPlayerId(), player->getTeam()->getTeamId(),
-                  player->getGamesPlayedWithoutTeam() + gamesPlayed,
-                  player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
-                  player->isGoalKeeper(), player->getTeam()) != StatusType::SUCCESS)
-        return add_playeraux(player->getPlayerId(), player->getTeam()->getTeamId(),
-                          player->getGamesPlayedWithoutTeam() + gamesPlayed,
-                          player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
-                          player->isGoalKeeper(), player->getTeam());
-
-    return StatusType::SUCCESS;
+    StatusType st = add_playeraux(player->getPlayerId(), player->getTeam()->getTeamId(),
+                                  player->getGamesPlayedWithoutTeam() + gamesPlayed,
+                                  player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
+                                  player->isGoalKeeper(), player->getTeam());
+    return st;
 }
 
 StatusType world_cup_t::play_match(int teamId1, int teamId2){

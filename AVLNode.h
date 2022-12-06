@@ -582,6 +582,10 @@ output_t<AVLNode<T>*> AVLNode<T>::remove(const T &val) {
 template<class T>
 AVLNode<T> *AVLNode<T>::removeLeaf(AVLNode<T> *node) {
     AVLNode<T>* temp = node->up;
+    if(temp== nullptr){
+        delete node;
+        return nullptr;
+    }
     if(node->up->left==node){
         node->up->left = nullptr;
         delete node;
