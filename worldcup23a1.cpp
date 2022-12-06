@@ -486,6 +486,8 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
         for(int i = 0; i < team->getPlayersCount(); ++i)
             output[i] = (*arr[i])->getPlayerId();
 
+
+        delete[] arr;
         return StatusType::SUCCESS;
     }
 
@@ -497,7 +499,7 @@ StatusType world_cup_t::get_all_players(int teamId, int* const output){
 
     for(int i = 0; i < playersCount; ++i)
         output[i] = (*arr[i])->getPlayerId();
-
+    delete[] arr;
     return StatusType::SUCCESS;
 }
 
@@ -548,8 +550,10 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId) {
 
         playingTeamsAmount = playingTeamsAmount % 2 + playingTeamsAmount / 2;
     }
-
-    return teamIdArr[0];
+    int keep = teamIdArr[0];
+    delete[] teamIdArr;
+    delete[] teamWinningRateArr;
+    return keep;
 }
 
 shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
