@@ -33,7 +33,7 @@ StatusType world_cup_t::add_team(int teamId, int points){
         if(teams->insert(t) != StatusType::SUCCESS)
             return StatusType::SUCCESS;
     }
-    catch(bad_alloc){
+    catch(const bad_alloc& e){
         return StatusType::ALLOCATION_ERROR;
     }
 
@@ -42,19 +42,20 @@ StatusType world_cup_t::add_team(int teamId, int points){
 
 #include <iostream>
 #include <memory>
-StatusType world_cup_t::remove_team(int teamId){
-    if(teamId <= 0)
+StatusType world_cup_t::remove_team(int teamId) {
+    if (teamId <= 0)
         return StatusType::INVALID_INPUT;
 
     shared_ptr<Team> temp(new Team(teamId));
-    output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(temp);
-    if(out.status() == StatusType::FAILURE)
+    output_t<AVLNode<shared_ptr<Team>> *> out = teams->find(temp);
+    if (out.status() == StatusType::FAILURE)
         return StatusType::FAILURE;
 
     temp = *(out.ans()->getKey().ans());
 
-    if(temp->getPlayersCount() > 0)
+    if (temp->getPlayersCount() > 0){
         return StatusType::FAILURE;
+    }
 
     StatusType status = teams->remove(temp);
 
@@ -127,14 +128,18 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         return StatusType::INVALID_INPUT;
 
     shared_ptr<Player> temp_p(new Player(playerId));
-    if(players->find(temp_p).status() != StatusType::FAILURE)
+    if(players->find(temp_p).status() != StatusType::FAILURE){
+        this->printPlayersByTeamId(13);
         return StatusType::FAILURE;
+    }
+
 
 
     shared_ptr<Team> team(new Team(teamId));
     output_t<AVLNode<shared_ptr<Team>>*> out = teams->find(team);
-    if(out.status() != StatusType::SUCCESS)
+    if(out.status() != StatusType::SUCCESS) {
         return out.status();
+    }
 
     team = *(out.ans()->getKey().ans());
 
@@ -152,8 +157,10 @@ StatusType world_cup_t::remove_player(int playerId){
 
     player = *(out.ans()->getKey().ans());
 
+
     if(players->remove(player) != StatusType::SUCCESS)
         return players->remove(player);
+
 
     if(playersByScore->remove(player) != StatusType::SUCCESS)
         return playersByScore->remove(player);
@@ -465,7 +472,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 }
 
 StatusType world_cup_t::get_all_players(int teamId, int* const output){
-    if(teamId == 0 || output == nullptr){
+    if(teamId == 0 || output == NULL){
         return StatusType::INVALID_INPUT;
     }
 

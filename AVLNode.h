@@ -44,6 +44,8 @@ private:
     void transferInfo(AVLNode<T>* from, AVLNode<T>* to);
     AVLNode<T>* sortedArrayToBST(shared_ptr<T> *arr, int start, int end);
 
+    void changeH(AVLNode<T>* node);
+
     AVLNode<T>* findAboveAux(AVLNode<T>* node, const T& val, AVLNode<T>* closest, AVLNode<T>* *search_finished);
     AVLNode<T>* findUnderAux(AVLNode<T>* node, const T& val, AVLNode<T>* closest, AVLNode<T>* *search_finished);
 public:
@@ -684,7 +686,7 @@ AVLNode<T> *AVLNode<T>::removeTwoChildren(AVLNode<T> *node) {
     while(successor->left != nullptr){
         successor = successor->left;
     }
-    T keep = node->key;
+    T& keep = node->key;
     node->key = successor->key;
     successor->key = keep;
     if(successor->right == nullptr){
@@ -776,6 +778,8 @@ AVLNode<T>* AVLNode<T>::unite(AVLNode<T> *other) {
 
     AVLNode<T>* node = sortedArrayToBST(arr3, 0, size1+size2-1);
 
+    changeH(node);
+
     delete[] arr1new;
     delete[] arr2new;
     delete[] arr3;
@@ -783,7 +787,21 @@ AVLNode<T>* AVLNode<T>::unite(AVLNode<T> *other) {
     return node;
 }
 
+template<class T>
+void AVLNode<T>::changeH(AVLNode<T>* node){
+    if(node == nullptr){
+        return;
+    }
+    if(node->isEmpty){
+        node->h = 0;
+        return;
+    }
 
+    changeH(node->left);
+    changeH(node->right);
+    updateH(node, node->left, node->right);
+
+}
 template<class T>
 void AVLNode<T>::mergeArrays(shared_ptr<T> *arr1, shared_ptr<T> *arr2, shared_ptr<T> *arr3, int size1, int size2) {
     //we assume that there are no equal values, and that arr3 is large enough
