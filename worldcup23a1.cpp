@@ -220,8 +220,10 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed, int s
     if(remove_player(player->getPlayerId()) != StatusType::SUCCESS)
         return remove_player(player->getPlayerId());
 
+    int keep = player->getTeam()->getGamesPlayedAsTeam();
+
     StatusType st = add_playeraux(player->getPlayerId(), player->getTeam()->getTeamId(),
-                                  player->getGamesPlayedWithoutTeam() + gamesPlayed,
+                                  player->getGamesPlayedWithoutTeam() + gamesPlayed + keep,
                                   player->getGoals() + scoredGoals, player->getCards() + cardsReceived,
                                   player->isGoalKeeper(), player->getTeam());
     return st;
