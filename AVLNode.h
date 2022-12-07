@@ -837,8 +837,14 @@ AVLNode<T> *AVLNode<T>::sortedArrayToBST(shared_ptr<T> *arr, int start, int end)
     }
     int mid = (start + end)/2;
     AVLNode<T>* node = new AVLNode<T>(*arr[mid], this->isLarger, this->isEqual);
+
     node->left = sortedArrayToBST(arr, start, mid-1);
+    if(node->left!= nullptr)
+        node->left->up = node;
+
     node->right = sortedArrayToBST(arr, mid+1, end);
+    if(node->right!= nullptr)
+        node->right->up = node;
 
     return node;
 }

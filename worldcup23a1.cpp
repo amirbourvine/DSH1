@@ -129,7 +129,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     shared_ptr<Player> temp_p(new Player(playerId));
     if(players->find(temp_p).status() != StatusType::FAILURE){
-        this->printPlayersByTeamId(13);
         return StatusType::FAILURE;
     }
 
