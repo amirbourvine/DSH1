@@ -410,7 +410,6 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
             return validTeams->remove(team2);
     }
 
-
     if(teams->remove(team1) != StatusType::SUCCESS)
         return teams->remove(team1);
 
@@ -662,6 +661,7 @@ void world_cup_t::printValidTeams(){
         ++count;
         currentValidTeam = currentValidTeam->getNextValidTeam();
     }
+
 }
 
 
