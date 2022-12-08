@@ -378,6 +378,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId) {
     if (teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0 || teamId1 == teamId2)
         return StatusType::INVALID_INPUT;
 
+
     shared_ptr<Team> team1(new Team(teamId1));
     output_t<AVLNode<shared_ptr<Team>> *> out1 = teams->find(team1);
     if (out1.status() != StatusType::SUCCESS) {
@@ -602,6 +603,7 @@ shared_ptr<Team> world_cup_t::findMinValid(int minid, int maxid) {
     validTeams->insert(temp);
 
     if(validTeams->findAbove(temp).ans() == nullptr){
+        validTeams->remove(temp);
         return nullptr;
     }
     shared_ptr<Team> cand = *(validTeams->findAbove(temp).ans()->getKey().ans());
