@@ -204,12 +204,14 @@ void printPlayer(shared_ptr<Player>& p){
     cout << *p;
 }
 void Team::printPlayersById(){
-    teamPlayersByID->inorder(&printPlayer);
+    teamPlayersByID->print2D();
+    //teamPlayersByID->inorder(&printPlayer);
     cout << endl;
 }
 
 void Team::printPlayersByScore(){
-    teamPlayersByScore->inorder(&printPlayer);
+    teamPlayersByScore->print2D();
+    //teamPlayersByScore->inorder(&printPlayer);
     cout << endl;
 }
 

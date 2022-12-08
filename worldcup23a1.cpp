@@ -374,40 +374,65 @@ void addGamesToPlayer(shared_ptr<Player>& p){
 void changePlayersTeamPtr(shared_ptr<Player>& p, shared_ptr<Team>& team) {
     p->setTeam(team);
 }
-StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
-    if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <=0 || teamId1 == teamId2)
+StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId) {
+    if (teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0 || teamId1 == teamId2)
         return StatusType::INVALID_INPUT;
 
     shared_ptr<Team> team1(new Team(teamId1));
-    output_t<AVLNode<shared_ptr<Team>>*> out1 = teams->find(team1);
-    if(out1.status() != StatusType::SUCCESS) {
+    output_t<AVLNode<shared_ptr<Team>> *> out1 = teams->find(team1);
+    if (out1.status() != StatusType::SUCCESS) {
         return out1.status();
     }
 
     team1 = *(out1.ans()->getKey().ans());
 
     shared_ptr<Team> team2(new Team(teamId2));
-    output_t<AVLNode<shared_ptr<Team>>*> out2 = teams->find(team2);
+    output_t<AVLNode<shared_ptr<Team>> *> out2 = teams->find(team2);
 
-    if(out2.status() != StatusType::SUCCESS) {
+    if (out2.status() != StatusType::SUCCESS) {
         return out2.status();
     }
 
     team2 = *(out2.ans()->getKey().ans());
 
     shared_ptr<Team> newTeam(new Team(newTeamId, team1->getPoints() + team2->getPoints()));
-    if(teams->find(newTeam).status() != StatusType::FAILURE && newTeamId!=teamId1 && newTeamId!=teamId2)
+    if (teams->find(newTeam).status() != StatusType::FAILURE && newTeamId != teamId1 && newTeamId != teamId2)
         return StatusType::FAILURE;
 
-
-    if(team1->isValid()){
-        if(validTeams->remove(team1) != StatusType::SUCCESS)
+    if (team1->isValid()) {
+        if (validTeams->remove(team1) != StatusType::SUCCESS)
             return validTeams->remove(team1);
+
+        shared_ptr<Team> next_valid = team1->getNextValidTeam();
+        shared_ptr<Team> prev_valid = team1->getPrevValidTeam();
+
+        team1->setNextValidTeam(shared_ptr<Team>(nullptr));
+        team1->setPrevValidTeam(shared_ptr<Team>(nullptr));
+
+        if (next_valid != nullptr) {
+            next_valid->setPrevValidTeam(prev_valid);
+        }
+        if (prev_valid != nullptr) {
+            prev_valid->setNextValidTeam(next_valid);
+        }
     }
 
     if(team2->isValid()){
         if(validTeams->remove(team2) != StatusType::SUCCESS)
             return validTeams->remove(team2);
+
+        shared_ptr<Team> next_valid = team2->getNextValidTeam();
+        shared_ptr<Team> prev_valid = team2->getPrevValidTeam();
+
+        team2->setNextValidTeam(shared_ptr<Team>(nullptr));
+        team2->setPrevValidTeam(shared_ptr<Team>(nullptr));
+
+        if (next_valid != nullptr) {
+            next_valid->setPrevValidTeam(prev_valid);
+        }
+        if (prev_valid != nullptr) {
+            prev_valid->setNextValidTeam(next_valid);
+        }
     }
 
     if(teams->remove(team1) != StatusType::SUCCESS)
@@ -445,23 +470,21 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId){
 
     newTeam->mergeTeams(team1, team2);
 
-
-    //ADD TREATMENT TO NEXTVALID AND PREVVALID
     if(newTeam->isValid()) {
         if(validTeams->insert(newTeam) != StatusType::SUCCESS) {
             return validTeams->insert(newTeam);
         }
+
         AVLNode<shared_ptr<Team>>* ptr = validTeams->findAbove(newTeam).ans();
         if(ptr != nullptr) {
             newTeam->setNextValidTeam(*(ptr->getKey().ans()));
             if(newTeam->getNextValidTeam() != nullptr)
                 newTeam->getNextValidTeam()->setPrevValidTeam(newTeam);
         }
-
         ptr = validTeams->findUnder(newTeam).ans();
-        if(ptr != nullptr){
+        if(ptr != nullptr) {
             newTeam->setPrevValidTeam(*(ptr->getKey().ans()));
-            if(newTeam->getPrevValidTeam() != nullptr)
+            if (newTeam->getPrevValidTeam() != nullptr)
                 newTeam->getPrevValidTeam()->setNextValidTeam(newTeam);
         }
     }
@@ -613,6 +636,7 @@ void ppppp(shared_ptr<Player>& p){
     cout << *p;
 }
 void world_cup_t::printAllPlayers(){
+    cout << "Amount of players in world cup: " << playersCount << endl;
     players->inorder(&ppppp);
     cout << endl;
 }
